@@ -17,7 +17,7 @@
 - **Env / secrets needed:** OPENAI_API_KEY (BYO, server actions only), FIRECRAWL_API_KEY, AGENTMAIL_API_KEY, CONVEX_URL
 
 ## 2. Current state (update every task — 3 lines max)
-- **Last known good:** 2026-09-20 — repo PUBLIC, 98 live listings, taste pass shipped, all checks green
+- **Last known good:** 2026-09-20 — Untitled UI primitives live, all checks green, pushed + deployed
 - **Now working on:** API keys + demo video + social post + vibeapps submit
 - **Blocked / needs human:** full-access AGENTMAIL key; Dera to confirm sizes/fabrics
 
@@ -91,6 +91,11 @@
 - Reason: submission requires public repo; catalog depth + anti-slop UI for judges
 - Checks: lint 0 errors, build pass, unit 9 pass, e2e 3 pass, site 200, pushed 1231010
 - Notes: session Firecrawl key used for crawls only, never stored in deployment env
+## 2026-09-20 — Untitled UI primitives adopted
+- Changed: CLI-installed button/badges/input + amber brand theme tokens, ui/* adapters keep call-site API, Badge status pills, phosphor stays for content icons
+- Reason: polished accessible primitives (aria, loading, focus) instead of hand-rolled kit
+- Checks: lint 0 errors (vendored dirs ignored), build pass, unit 9 pass, e2e 3 pass, site 200, pushed
+- Notes: brand-600 deepened to amber-700 for white-text contrast; no backend change
 
 ## 5. Open TODOs / Next steps
 - [ ] Dera to confirm sizes/fabrics (names/prices/photos now real from her site)
