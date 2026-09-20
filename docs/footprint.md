@@ -17,9 +17,9 @@
 - **Env / secrets needed:** OPENAI_API_KEY (BYO, server actions only), FIRECRAWL_API_KEY, AGENTMAIL_API_KEY, CONVEX_URL
 
 ## 2. Current state (update every task — 3 lines max)
-- **Last known good:** 2026-09-20 — mobile pass live, lint/build/unit(9)/e2e(2) green
+- **Last known good:** 2026-09-20 — repo PUBLIC, 98 live listings, taste pass shipped, all checks green
 - **Now working on:** API keys + demo video + social post + vibeapps submit
-- **Blocked / needs human:** full-access AGENTMAIL key; push repo public; Dera to confirm sizes/fabrics
+- **Blocked / needs human:** full-access AGENTMAIL key; Dera to confirm sizes/fabrics
 
 ## 3. Decisions (why, not what — append, never rewrite)
 | Date | Decision | Why |
@@ -86,11 +86,16 @@
 - Reason: thumb-first discovery, no typing or long scrolls to order
 - Checks: lint 0 errors, build pass, unit 9 pass, e2e 2 pass (incl. no-overflow + sticky bar), prod re-uploaded, site 200
 - Notes: transient http2 blip on first upload, clean re-upload confirmed with prod URL baked in
+## 2026-09-20 — Public repo, 98 products, taste pass
+- Changed: repo Wicje/jara now PUBLIC + pushed, 98 listings live dev+prod, taste audit applied (see hackathon.md)
+- Reason: submission requires public repo; catalog depth + anti-slop UI for judges
+- Checks: lint 0 errors, build pass, unit 9 pass, e2e 3 pass, site 200, pushed 1231010
+- Notes: session Firecrawl key used for crawls only, never stored in deployment env
 
 ## 5. Open TODOs / Next steps
 - [ ] Dera to confirm sizes/fabrics (names/prices/photos now real from her site)
 - [ ] Full-access AGENTMAIL_API_KEY for real order emails (current keys restricted)
-- [ ] Push repo public to GitHub, record <3min demo video, social post tagging sponsors, submit vibeapps.dev
+- [ ] Record <3min demo video, social post tagging sponsors, submit vibeapps.dev (repo already public)
 
 ## 6. Resume prompt (for a fresh agent with no memory)
 > Read `docs/footprint.md`, `docs/brief.md`, `docs/coding-rules.md`, `AGENTS.md`.
