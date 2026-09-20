@@ -1,0 +1,51 @@
+import { defineSchema, defineTable } from "convex/server";
+import { v } from "convex/values";
+
+export default defineSchema({
+  vendors: defineTable({
+    name: v.string(),
+    area: v.string(),
+    instagramUrl: v.string(),
+    whatsapp: v.optional(v.string()),
+    inboxId: v.optional(v.string()),
+  }),
+  listings: defineTable({
+    vendorId: v.id("vendors"),
+    title: v.string(),
+    priceNgn: v.number(),
+    sizes: v.array(v.string()),
+    fabric: v.string(),
+    occasion: v.string(),
+    photoUrl: v.string(),
+    sourceUrl: v.optional(v.string()),
+    status: v.string(),
+  })
+    .index("by_vendor", ["vendorId"])
+    .index("by_occasion", ["occasion"])
+    .index("by_status", ["status"]),
+  threads: defineTable({
+    query: v.string(),
+    budgetNgn: v.optional(v.number()),
+    size: v.optional(v.string()),
+    occasion: v.optional(v.string()),
+    recommendedIds: v.array(v.id("listings")),
+  }),
+  orders: defineTable({
+    listingId: v.id("listings"),
+    vendorId: v.id("vendors"),
+    size: v.string(),
+    buyerName: v.string(),
+    buyerPhone: v.string(),
+    status: v.string(),
+    threadId: v.optional(v.string()),
+  })
+    .index("by_vendor", ["vendorId"])
+    .index("by_listing", ["listingId"]),
+  inboxEvents: defineTable({
+    orderId: v.id("orders"),
+    direction: v.string(),
+    subject: v.optional(v.string()),
+    body: v.string(),
+    status: v.optional(v.string()),
+  }).index("by_order", ["orderId"]),
+});

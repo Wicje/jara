@@ -22,6 +22,10 @@ export function CardHeader({ className, ...props }: HTMLAttributes<HTMLDivElemen
   return <div className={`mb-4 ${className ?? ""}`} {...props} />;
 }
 
+export function CardMedia({ className, ...props }: HTMLAttributes<HTMLDivElement>) {
+  return <div className={`-m-3 mb-2 overflow-hidden rounded-t-xl sm:-m-6 sm:mb-4 ${className ?? ""}`} {...props} />;
+}
+
 export function CardTitle({ className, ...props }: HTMLAttributes<HTMLHeadingElement>) {
   return <h3 className={`text-lg font-semibold ${className ?? ""}`} {...props} />;
 }

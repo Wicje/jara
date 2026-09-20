@@ -5,30 +5,38 @@
 
 ## 1. Problem
 
-_TBD — what hurts, for whom, why now._
+Shoppers scroll Instagram for Nigerian ready-made but can't filter by occasion + budget NGN + size, and DMs get lost. Vendors like Dera's Store post photos with prices in captions, take orders in DMs/WhatsApp, lose track.
 
 ## 2. Solution
 
-_TBD — smallest working version first._
+Jara concierge marketplace. Smallest slice: chat (English/pidgin) → 3 live Listing recommendations from Dera's catalog → confirm Order → AgentMail email to vendor + WhatsApp fallback → live Order timeline. Second slice: vendor importer pastes store URL, Firecrawl drafts Listings.
 
 ## 3. User stories
 
-- _TBD_
+- Shopper chats occasion + budget + size, gets 3 matching Listings with reasons.
+- Shopper opens a Listing, sees price NGN, sizes, fabric, vendor area.
+- Shopper places an Order with size + name + phone, sees live timeline.
+- Dera receives Order by email, replies to confirm, reply appears in timeline.
+- Shopper taps WhatsApp fallback when vendor is slow.
+- Vendor pastes IG/store URL, gets draft Listings to approve.
 
 ## 4. Implementation decisions
 
-- Seams: _TBD (routes, props, actions — behavior only)_
+- Seams: concierge search behavior (query text → ranked Listings), order placement behavior (Listing + size + contact → Order + outbound email), inbox ingest behavior (inbound email → timeline event + status), importer behavior (store URL → draft Listings).
+- Stack: Next.js frontend on convex.site hosting, Convex database + functions + realtime + file storage, OpenAI via server action with BYO key (AI Gateway is paid-only), Firecrawl for import/re-sync, AgentMail for order threads.
+- Tracer bullet: 10 seeded Dera Listings → chat → order → mocked vendor email → timeline moves live.
 
 ## 5. Testing decisions
 
-- _TBD_
+- Unit at seams: ranking/filter logic, order validation (size + contact required), inbox status mapping, importer field mapping. No coupling to internals.
+- Manual demo script doubles as e2e: chat → recommend → order → reply → timeline.
 
 ## 6. Out-of-scope
 
-_TBD — empty rejects the spec._
+No payments, no Auth v2, no multi-vendor search/ranking beyond seed, no recommendations beyond occasion/budget/size/fabric, no chatgpt.site target.
 
 ## 7. Readiness
 
-- [ ] Seams agreed
-- [ ] Tracer bullet identified
+- [x] Seams agreed
+- [x] Tracer bullet identified
 - [ ] Labelled `ready-for-tickets`
