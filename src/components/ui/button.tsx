@@ -1,55 +1,54 @@
 "use client";
 
-import { forwardRef, type ButtonHTMLAttributes, type ReactNode } from "react";
+import type { ReactNode } from "react";
+import { Button as UntitledButton } from "@/components/base/buttons/button";
 
 type Variant = "primary" | "secondary" | "outline" | "ghost" | "danger";
 type Size = "sm" | "md" | "lg";
 
-const base =
-  "inline-flex items-center justify-center gap-2 rounded-md text-sm font-medium whitespace-normal text-center transition-colors active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50";
+const colors = {
+  primary: "primary",
+  secondary: "secondary",
+  outline: "secondary",
+  ghost: "tertiary",
+  danger: "primary-destructive",
+} as const;
 
-const variants: Record<Variant, string> = {
-  primary: "bg-neutral-900 text-white hover:bg-neutral-700 focus-visible:ring-neutral-900",
-  secondary: "bg-neutral-100 text-neutral-900 hover:bg-neutral-200 focus-visible:ring-neutral-400",
-  outline:
-    "border border-neutral-300 bg-transparent text-neutral-900 hover:bg-neutral-50 focus-visible:ring-neutral-400",
-  ghost: "text-neutral-900 hover:bg-neutral-100 focus-visible:ring-neutral-400",
-  danger: "bg-red-600 text-white hover:bg-red-500 focus-visible:ring-red-500",
-};
-
-const sizes: Record<Size, string> = {
-  sm: "h-8 px-3 text-xs",
-  md: "h-10 px-4",
-  lg: "h-12 px-6 text-base",
-};
-
-export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+export interface ButtonProps {
   variant?: Variant;
   size?: Size;
   loading?: boolean;
+  disabled?: boolean;
+  type?: "button" | "submit" | "reset";
+  onClick?: () => void;
+  className?: string;
   children?: ReactNode;
+  ariaLabel?: string;
 }
 
-export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button(
-  { variant = "primary", size = "md", loading = false, disabled, children, className, type = "button", ...props },
-  ref
-) {
+export function Button({
+  variant = "primary",
+  size = "md",
+  loading = false,
+  disabled,
+  type = "button",
+  onClick,
+  className,
+  children,
+  ariaLabel,
+}: ButtonProps) {
   return (
-    <button
-      ref={ref}
+    <UntitledButton
+      color={colors[variant]}
+      size={size}
+      isLoading={loading}
+      isDisabled={disabled || loading}
       type={type}
-      disabled={disabled || loading}
-      aria-busy={loading || undefined}
-      className={`${base} ${variants[variant]} ${sizes[size]} ${className ?? ""}`}
-      {...props}
+      aria-label={ariaLabel}
+      onPress={onClick}
+      className={className}
     >
-      {loading && (
-        <span
-          aria-hidden="true"
-          className="h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent"
-        />
-      )}
       {children}
-    </button>
+    </UntitledButton>
   );
-});
+}

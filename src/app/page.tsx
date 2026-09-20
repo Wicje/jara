@@ -11,6 +11,7 @@ import { DERA_LISTINGS, DERA_VENDOR } from "@/data/dera";
 import { matchReasons, parseNaturalQuery, recommendListings, type ConciergeFilter } from "@/lib/concierge";
 import { isConvexConfigured } from "./providers";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import { ChipGroup, BUDGET_OPTIONS, OCCASION_OPTIONS, SIZE_OPTIONS } from "@/components/filter-chips";
 import { StickyOrderBar } from "@/components/sticky-order-bar";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardMedia, CardTitle } from "@/components/ui/card";
@@ -55,20 +56,15 @@ function matchesFilter(
   return true;
 }
 
-const STATUS_STYLES: Record<string, string> = {
-  placed: "bg-amber-100 text-amber-900",
-  sent_to_vendor: "bg-blue-100 text-blue-900",
-  confirmed: "bg-green-100 text-green-900",
-  ready: "bg-green-100 text-green-900",
+const STATUS_COLORS: Record<string, "warning" | "blue" | "success" | "gray"> = {
+  placed: "warning",
+  sent_to_vendor: "blue",
+  confirmed: "success",
+  ready: "success",
 };
 
 function StatusPill({ status }: { status: string }) {
-  const style = STATUS_STYLES[status] ?? "bg-neutral-100 text-neutral-800";
-  return (
-    <span className={`inline-block rounded-full px-3 py-1 text-xs font-semibold ${style}`}>
-      {status.replace(/_/g, " ")}
-    </span>
-  );
+  return <Badge color={STATUS_COLORS[status] ?? "gray"}>{status.replace(/_/g, " ")}</Badge>;
 }
 
 function resetFilter(): { occasion: string; budget: string; size: string } {
@@ -341,7 +337,7 @@ function CatalogView(props: {
           aria-label="Describe what you're looking for"
           className="h-12 text-base"
         />
-        <Button type="submit" size="lg" className="bg-amber-800 hover:bg-amber-700 focus-visible:ring-amber-800">
+        <Button type="submit" size="lg">
           <MagnifyingGlass size={18} weight="bold" aria-hidden="true" />
           Ask Jara
         </Button>
@@ -427,7 +423,7 @@ function CatalogView(props: {
                 </CardContent>
                 <CardFooter>
                   {props.onOrder ? (
-                    <Button className="w-full bg-amber-800 hover:bg-amber-700 focus-visible:ring-amber-800" onClick={() => props.onOrder?.(listing)}>
+                    <Button className="w-full" onClick={() => props.onOrder?.(listing)}>
                       Order this piece
                     </Button>
                   ) : (

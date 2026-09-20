@@ -1,4 +1,8 @@
 @import "tailwindcss";
+@import "./untitledui-theme.css";
+
+@plugin "tailwindcss-animate";
+@plugin "tailwindcss-react-aria-components";
 
 :root {
   --background: #ffffff;

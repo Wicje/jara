@@ -1,18 +1,43 @@
 "use client";
 
-import { forwardRef, type InputHTMLAttributes } from "react";
+import { Input as UntitledInput } from "@/components/base/input/input";
 
-export type InputProps = InputHTMLAttributes<HTMLInputElement>;
+export interface InputProps {
+  id?: string;
+  name?: string;
+  value: string;
+  onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  placeholder?: string;
+  inputMode?: "text" | "numeric" | "tel" | "search" | "email" | "url";
+  autoComplete?: string;
+  className?: string;
+  ariaLabel?: string;
+}
 
-export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
-  { className, ...props },
-  ref
-) {
+export function Input({
+  id,
+  name,
+  value,
+  onChange,
+  placeholder,
+  inputMode = "text",
+  autoComplete,
+  className,
+  ariaLabel,
+}: InputProps) {
   return (
-    <input
-      ref={ref}
-      className={`h-10 w-full rounded-md border border-neutral-300 bg-white px-3 text-sm text-neutral-900 placeholder:text-neutral-400 focus:outline-none focus:ring-2 focus:ring-neutral-900 disabled:opacity-50 ${className ?? ""}`}
-      {...props}
+    <UntitledInput
+      id={id}
+      name={name}
+      value={value}
+      onChange={(next) =>
+        onChange({ target: { value: next } } as React.ChangeEvent<HTMLInputElement>)
+      }
+      placeholder={placeholder}
+      inputMode={inputMode}
+      autoComplete={autoComplete}
+      aria-label={ariaLabel}
+      inputClassName={className}
     />
   );
-});
+}
