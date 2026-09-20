@@ -1,5 +1,6 @@
 "use client";
 
+import { ArrowDown } from "@phosphor-icons/react";
 import { formatNgnShort } from "./format";
 
 interface StickyOrderBarProps {
@@ -19,8 +20,9 @@ export function StickyOrderBar({ title, priceNgn, onContinue }: StickyOrderBarPr
         <button
           type="button"
           onClick={onContinue}
-          className="inline-flex min-h-11 shrink-0 items-center justify-center rounded-md bg-amber-800 px-5 text-sm font-medium text-white transition-colors hover:bg-amber-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-800"
+          className="inline-flex min-h-11 shrink-0 items-center justify-center gap-1.5 rounded-md bg-amber-800 px-5 text-sm font-medium text-white transition-all hover:bg-amber-700 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-800"
         >
+          <ArrowDown size={16} weight="bold" aria-hidden="true" />
           Continue
         </button>
       </div>

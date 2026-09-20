@@ -60,7 +60,7 @@ export const importStore = action({
 
     const apiKey = process.env.FIRECRAWL_API_KEY;
     if (!apiKey) {
-      return { imported: 0, note: "dry run — set FIRECRAWL_API_KEY to crawl for real" };
+      return { imported: 0, note: "dry run. Set FIRECRAWL_API_KEY to crawl for real" };
     }
     const res = await fetch("https://api.firecrawl.dev/v2/scrape", {
       method: "POST",

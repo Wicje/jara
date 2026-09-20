@@ -40,9 +40,9 @@ export const notifyVendor = action({
         orderId: args.orderId,
         direction: "out",
         subject: `Queued for vendor: ${data.listing.title}`,
-        body: `${body} (AgentMail key not set — connect AGENTMAIL_API_KEY to send for real.)`,
+        body: `${body} (AgentMail key not set. Connect AGENTMAIL_API_KEY to send for real.)`,
       });
-      return { sent: false, note: "queued — set AGENTMAIL_API_KEY to send" };
+      return { sent: false, note: "queued. Set AGENTMAIL_API_KEY to send" };
     }
 
     const res = await fetch("https://api.agentmail.to/v0/messages/send", {

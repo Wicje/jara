@@ -32,7 +32,7 @@ export function ImporterCard() {
     <Card variant="subtle" className="mt-6">
       <CardHeader>
         <CardTitle>Vendor importer</CardTitle>
-        <CardDescription>Paste a store URL — Firecrawl crawls it into draft Listings for review.</CardDescription>
+        <CardDescription>Paste a store URL. Firecrawl crawls it into draft Listings for review.</CardDescription>
       </CardHeader>
       <CardContent>
         <div className="grid gap-1">

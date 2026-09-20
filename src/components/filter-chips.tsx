@@ -22,7 +22,7 @@ export function ChipGroup({ label, options, current, onSelect }: ChipGroupProps)
               type="button"
               aria-pressed={selected}
               onClick={() => onSelect(option.value)}
-              className={`min-h-11 rounded-full px-4 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-800 ${
+              className={`min-h-11 rounded-full px-4 text-sm font-medium transition-all active:scale-[0.97] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-800 ${
                 selected
                   ? "bg-amber-800 text-white"
                   : "border border-neutral-300 bg-white text-neutral-800 active:bg-neutral-100"

@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useMemo, useRef, useState } from "react";
+import { Check, MagnifyingGlass, WhatsappLogo } from "@phosphor-icons/react";
 import { useAction, useMutation, useQuery } from "convex/react";
 import { api } from "../../convex/_generated/api";
 import type { Id } from "../../convex/_generated/dataModel";
@@ -200,8 +201,8 @@ function LiveCatalog() {
             <CardTitle>{activeItem ? `Order: ${activeItem.title}` : "Place an order"}</CardTitle>
             <CardDescription>
               {activeItem
-                ? `${formatNgn(activeItem.priceNgn)} · pick your size below, Dera confirms by email.`
-                : "Pick a piece above, add your name + phone. Dera confirms by email — you get a live timeline."}
+                ? `${formatNgn(activeItem.priceNgn)}. Pick your size below, Dera confirms by email.`
+                : "Pick a piece above, add your name and phone. Dera confirms by email. You get a live timeline."}
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -234,8 +235,8 @@ function LiveCatalog() {
                 {placed.events.map((event) => (
                   <details key={event._id} className="rounded-lg border border-neutral-200 bg-white px-3 py-2">
                     <summary className="cursor-pointer text-sm font-medium">
-                      {event.direction === "out" ? "→ To vendor" : "← From vendor"}
-                      {event.subject ? ` — ${event.subject}` : ""}
+                      {event.direction === "out" ? "To vendor" : "From vendor"}
+                      {event.subject ? `: ${event.subject}` : ""}
                     </summary>
                     <Text as="span" className="mt-1 block">{event.body}</Text>
                   </details>
@@ -249,7 +250,7 @@ function LiveCatalog() {
               disabled={activeItem === null || buyerName.trim() === "" || buyerPhone.trim() === ""}
               onClick={() => void submitOrder()}
             >
-              Confirm order{activeItem ? ` — ${formatNgn(activeItem.priceNgn)}` : ""}
+              Confirm order{activeItem ? `: ${formatNgn(activeItem.priceNgn)}` : ""}
             </Button>
             <a
               href={`${DERA_VENDOR.whatsappLink}?text=${encodeURIComponent(whatsappText)}`}
@@ -257,13 +258,14 @@ function LiveCatalog() {
               rel="noopener noreferrer"
               className="inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-md border border-neutral-300 px-4 text-sm font-medium transition-colors hover:bg-neutral-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400 sm:w-auto"
             >
+              <WhatsappLogo size={16} weight="bold" aria-hidden="true" />
               Chat Dera on WhatsApp
             </a>
           </CardFooter>
         </Card>
       </div>
       <Text className="mt-6" tone="muted">
-        {stats ? `${stats.pieces} pieces live · ${stats.orders} orders placed · ` : ""}Same-day delivery in Lagos ·{" "}
+        {stats ? `${stats.pieces} pieces live. ${stats.orders} orders placed. ` : ""}Same-day delivery in Lagos.{" "}
         <Link href="/vendor" className="underline">
           Sell on Jara
         </Link>
@@ -340,6 +342,7 @@ function CatalogView(props: {
           className="h-12 text-base"
         />
         <Button type="submit" size="lg" className="bg-amber-800 hover:bg-amber-700 focus-visible:ring-amber-800">
+          <MagnifyingGlass size={18} weight="bold" aria-hidden="true" />
           Ask Jara
         </Button>
       </form>
@@ -363,16 +366,24 @@ function CatalogView(props: {
       </details>
 
       {props.loading ? (
-        <Text className="mt-8">Loading live catalog…</Text>
+        <div className="mt-6 grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-3" aria-label="Loading catalog" aria-busy="true">
+          {[0, 1, 2, 3, 4, 5].map((skeleton) => (
+            <div key={skeleton} className="rounded-xl border border-neutral-200 bg-white p-3 sm:p-6">
+              <div className="aspect-[3/4] w-full animate-pulse rounded-lg bg-neutral-200" />
+              <div className="mt-3 h-4 w-3/4 animate-pulse rounded bg-neutral-200" />
+              <div className="mt-2 h-4 w-1/2 animate-pulse rounded bg-neutral-200" />
+            </div>
+          ))}
+        </div>
       ) : props.items.length === 0 ? (
         <Card variant="subtle" className="mt-8">
           <CardHeader>
-            <CardTitle>Nothing matches — yet</CardTitle>
+            <CardTitle>Nothing matches yet</CardTitle>
             <CardDescription>No pieces fit that combination. Loosen the budget or clear the size to see more.</CardDescription>
           </CardHeader>
           <CardFooter>
             <Button variant="outline" onClick={resetAll}>
-              Reset to owambe · 100k · M
+              Reset filters
             </Button>
           </CardFooter>
         </Card>
@@ -398,7 +409,7 @@ function CatalogView(props: {
                     {formatNgn(listing.priceNgn)}
                   </Text>
                   <CardDescription className="hidden sm:block">
-                    Sizes {listing.sizes.join(", ")} · In stock · {listing.occasion}
+                    Sizes {listing.sizes.join(", ")}. In stock for {listing.occasion}.
                   </CardDescription>
                   <CardDescription className="sm:hidden">In stock</CardDescription>
                 </CardHeader>
@@ -406,8 +417,9 @@ function CatalogView(props: {
                   {reasons.length > 0 && (
                     <ul className="grid gap-1">
                       {reasons.map((reason) => (
-                        <li key={reason} className="text-sm text-neutral-600">
-                          ✓ {reason}
+                        <li key={reason} className="flex items-start gap-1.5 text-sm text-neutral-600">
+                          <Check size={15} weight="bold" aria-hidden="true" className="mt-0.5 shrink-0 text-amber-800" />
+                          {reason}
                         </li>
                       ))}
                     </ul>
@@ -420,7 +432,7 @@ function CatalogView(props: {
                     </Button>
                   ) : (
                     <Text as="span" tone="muted">
-                      From {DERA_VENDOR.name} · {DERA_VENDOR.area}
+                      From {DERA_VENDOR.name}, {DERA_VENDOR.area}
                     </Text>
                   )}
                 </CardFooter>
@@ -437,16 +449,15 @@ export default function Home() {
   return (
     <main>
       <Container className="py-10">
-      <Text as="h1" className="font-serif text-5xl sm:text-6xl">
+      <Text as="h1" className="text-5xl font-extrabold tracking-tight sm:text-6xl">
         Jara
       </Text>
       <Text className="mt-3 max-w-xl text-lg">
-        Jara means extra value. Tell us the occasion, your budget, and your size — we match you with real pieces
-        from {DERA_VENDOR.name}, {DERA_VENDOR.byline} in Lagos.
+        Jara means extra value. Share the occasion, budget, and size. We match you with real pieces from {DERA_VENDOR.name}.
       </Text>
       {isConvexConfigured() ? <LiveCatalog /> : <StaticCatalog />}
       <Text className="mt-6" tone="muted">
-        Live catalog from styleinlagos.ng via Firecrawl. Sizes and fabrics to be confirmed by vendor.
+        Live catalog from {DERA_VENDOR.name} ({DERA_VENDOR.byline}) via Firecrawl. Sizes and fabrics to be confirmed by vendor.
       </Text>
       </Container>
     </main>

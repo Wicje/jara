@@ -9,7 +9,7 @@ export default function VendorPage() {
       <Container className="py-10">
       <Text as="h1">Sell on Jara</Text>
       <Text className="mt-2">
-        Paste your store link and Firecrawl turns it into draft listings — approve them and shoppers can order by email.
+        Paste your store link and Firecrawl turns it into draft listings. Approve them and shoppers can order by email.
       </Text>
       <ImporterCard />
       <Text className="mt-6">

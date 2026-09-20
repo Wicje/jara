@@ -1,5 +1,7 @@
 "use client";
 
+// Radius system (locked): cards 12px (rounded-xl), buttons and inputs 6px
+// (rounded-md), chips and status pills full (rounded-full).
 import type { HTMLAttributes } from "react";
 
 type Variant = "default" | "subtle" | "feature";

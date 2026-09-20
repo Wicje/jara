@@ -56,7 +56,7 @@ export function matchReasons(
 ): string[] {
   const reasons: string[] = [];
   if (filter.maxBudgetNgn !== undefined && listing.priceNgn <= filter.maxBudgetNgn) {
-    reasons.push(`₦${listing.priceNgn.toLocaleString("en-NG")} — under your ₦${filter.maxBudgetNgn.toLocaleString("en-NG")} budget`);
+    reasons.push(`₦${listing.priceNgn.toLocaleString("en-NG")} fits your ₦${filter.maxBudgetNgn.toLocaleString("en-NG")} budget`);
   }
   const size = filter.size?.trim().toUpperCase();
   if (size && listing.sizes.map((s) => s.toUpperCase()).includes(size)) {

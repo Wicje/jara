@@ -14,7 +14,7 @@ export default function Error({
   return (
     <Container className="py-16">
       <Text as="h2">Jara is dressing up</Text>
-      <Text className="mt-2">Something hiccuped{error.digest ? ` (${error.digest})` : ""}. Your picks are safe — try again.</Text>
+      <Text className="mt-2">Something hiccuped{error.digest ? ` (${error.digest})` : ""}. Your picks are safe. Try again.</Text>
       <Button className="mt-6" onClick={() => reset()}>
         Try again
       </Button>

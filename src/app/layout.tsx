@@ -14,13 +14,13 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Jara — AI fashion market for Lagos",
+  title: "Jara: AI fashion market for Lagos",
   description:
-    "Jara means extra value. Chat your occasion, budget, and size — AI matches you with real pieces from Lagos boutiques. Same-day delivery in Lagos.",
+    "Jara means extra value. Chat your occasion, budget, and size. AI matches you with real pieces from Lagos boutiques. Same-day delivery in Lagos.",
   openGraph: {
-    title: "Jara — chat your style, own the owambe",
+    title: "Jara: chat your style, own the owambe",
     description:
-      "Real pieces, real ₦ prices from Lagos boutiques. Order in one tap — the vendor confirms by email.",
+      "Real pieces, real prices in naira from Lagos boutiques. Order in one tap. The vendor confirms by email.",
     type: "website",
   },
 };
