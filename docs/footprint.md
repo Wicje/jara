@@ -17,9 +17,9 @@
 - **Env / secrets needed:** OPENAI_API_KEY (BYO, server actions only), FIRECRAWL_API_KEY, AGENTMAIL_API_KEY, CONVEX_URL
 
 ## 2. Current state (update every task — 3 lines max)
-- **Last known good:** 2026-09-20 — Untitled UI primitives live, all checks green, pushed + deployed
-- **Now working on:** API keys + demo video + social post + vibeapps submit
-- **Blocked / needs human:** full-access AGENTMAIL key; Dera to confirm sizes/fabrics
+- **Last known good:** 2026-09-20 — full store IA live (8 routes), lint/build/unit(11)/e2e(3) green
+- **Now working on:** Dera email for real sends + demo video + social post + vibeapps submit
+- **Blocked / needs human:** Dera's EMAIL address; Dera to confirm sizes/fabrics
 
 ## 3. Decisions (why, not what — append, never rewrite)
 | Date | Decision | Why |
@@ -96,11 +96,21 @@
 - Reason: polished accessible primitives (aria, loading, focus) instead of hand-rolled kit
 - Checks: lint 0 errors (vendored dirs ignored), build pass, unit 9 pass, e2e 3 pass, site 200, pushed
 - Notes: brand-600 deepened to amber-700 for white-text contrast; no backend change
+## 2026-09-20 — Audit fixes: email routing, atomic orders, active catalog
+- Changed: notifyVendor sends to vendor.email (was buyerPhone), place schedules notify, list active-only take 200, importer S-XL, wedding regex, swim reclassified (9), Any chip, shared filter hook, README, OG image
+- Reason: core order loop was broken for real sends; drafts leaked into catalog
+- Checks: lint 0 errors, build pass, unit 11 pass, atomic order verified live (place to queued event)
+- Notes: need Dera EMAIL to activate real sends
+## 2026-09-20 — Full store IA shipped
+- Changed: header/footer, landing hero + occasions + new-in, /catalog with sort/count, /product PDP, /cart, /checkout with groupId, /order receipt + live tracking, /store storefront, cart context + localStorage
+- Reason: single page felt like filter demo, not a store
+- Checks: lint 0 errors, build 8 routes, unit 11 pass, e2e 3 pass, all routes 200 live, pushed
+- Notes: query-param detail URLs (static hosting); PDP gallery is single photo (only data we have)
 
 ## 5. Open TODOs / Next steps
-- [ ] Dera to confirm sizes/fabrics (names/prices/photos now real from her site)
-- [ ] Full-access AGENTMAIL_API_KEY for real order emails (current keys restricted)
-- [ ] Record <3min demo video, social post tagging sponsors, submit vibeapps.dev (repo already public)
+- [ ] Get Dera's EMAIL address so order emails send for real (currently queued honestly)
+- [ ] Dera to confirm sizes/fabrics (names/prices/photos real from her site)
+- [ ] Full-access AGENTMAIL_API_KEY, then demo video, social post, vibeapps submit
 
 ## 6. Resume prompt (for a fresh agent with no memory)
 > Read `docs/footprint.md`, `docs/brief.md`, `docs/coding-rules.md`, `AGENTS.md`.
