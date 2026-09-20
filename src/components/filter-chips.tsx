@@ -38,6 +38,7 @@ export function ChipGroup({ label, options, current, onSelect }: ChipGroupProps)
 }
 
 export const OCCASION_OPTIONS = [
+  { value: "", label: "Any" },
   { value: "owambe", label: "Owambe" },
   { value: "church", label: "Church" },
   { value: "street", label: "Street" },

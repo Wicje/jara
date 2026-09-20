@@ -133,6 +133,22 @@ export const seedDera = mutation({
   },
 });
 
+// One-shot fix: swim and beach pieces were heuristically tagged church.
+export const reclassifySwim = mutation({
+  args: {},
+  handler: async (ctx) => {
+    const listings = await ctx.db.query("listings").order("desc").take(500);
+    let fixed = 0;
+    for (const listing of listings) {
+      const title = listing.title.toLowerCase();
+      if (listing.occasion !== "street" && (title.includes("swim") || title.includes("beach") || title.includes("bikini"))) {
+        await ctx.db.patch("listings", listing._id, { occasion: "street" });
+        fixed += 1;
+      }
+    }
+    return { fixed };
+  },
+});
 // Replaces the whole vendor catalog with Firecrawl-fed SEED data.
 // Clears listings + orders + inboxEvents so no stale best-guess rows remain.
 export const replaceCatalog = mutation({

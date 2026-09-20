@@ -6,24 +6,27 @@ export const orderSummary = internalQuery({
   args: { orderId: v.id("orders") },
   handler: async (ctx, args) => {
     const order = await ctx.db.get("orders", args.orderId);
-    if (order === null) return { order: null, listing: null };
+    if (order === null) return { order: null, listing: null, vendorEmail: null };
     const listing = await ctx.db.get("listings", order.listingId);
-    if (listing === null) return { order: null, listing: null };
+    if (listing === null) return { order: null, listing: null, vendorEmail: null };
+    const vendor = await ctx.db.get("vendors", order.vendorId);
     return {
       order: { status: order.status, buyerName: order.buyerName, buyerPhone: order.buyerPhone, size: order.size },
       listing: { title: listing.title, priceNgn: listing.priceNgn },
+      vendorEmail: vendor?.email ?? null,
     };
   },
 });
 
-// Sends the order to the vendor via AgentMail. Without AGENTMAIL_API_KEY
-// set on the deployment, records a queued event so the demo still works.
+// Sends the order to the vendor's email via AgentMail. Records what happened
+// as a timeline event either way, so failures are visible instead of silent.
 export const notifyVendor = action({
   args: { orderId: v.id("orders") },
   handler: async (ctx, args): Promise<{ sent: boolean; note: string }> => {
     const data: {
       order: { status: string; buyerName: string; buyerPhone: string; size: string } | null;
       listing: { title: string; priceNgn: number } | null;
+      vendorEmail: string | null;
     } = await ctx.runQuery(internal.email.orderSummary, { orderId: args.orderId });
     if (data.order === null || data.listing === null) throw new Error("Order not found");
 
@@ -35,6 +38,15 @@ export const notifyVendor = action({
       `₦${data.listing.priceNgn.toLocaleString("en-NG")}. ` +
       `Reply to this email to confirm.`;
 
+    if (data.vendorEmail === null) {
+      await ctx.runMutation(internal.inbox.record, {
+        orderId: args.orderId,
+        direction: "out",
+        subject: `Queued for vendor: ${data.listing.title}`,
+        body: `${body} (No vendor email on file. Add it to send for real.)`,
+      });
+      return { sent: false, note: "queued. No vendor email on file" };
+    }
     if (!apiKey || !inboxId) {
       await ctx.runMutation(internal.inbox.record, {
         orderId: args.orderId,
@@ -50,7 +62,7 @@ export const notifyVendor = action({
       headers: { "Content-Type": "application/json", Authorization: `Bearer ${apiKey}` },
       body: JSON.stringify({
         inbox_id: inboxId,
-        to: data.order.buyerPhone,
+        to: data.vendorEmail,
         subject: `New Jara order: ${data.listing.title} (${data.order.size})`,
         text: body,
         labels: ["jara-order"],

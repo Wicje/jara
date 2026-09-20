@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { matchReasons, parseNaturalQuery, recommendListings } from "@/lib/concierge";
+import { filterListings, matchReasons, parseNaturalQuery, recommendListings } from "@/lib/concierge";
 
 describe("recommendListings", () => {
   it("filters by occasion and budget", () => {
@@ -32,6 +32,24 @@ describe("parseNaturalQuery", () => {
 
   it("ignores non-sizes and returns partial filters", () => {
     expect(parseNaturalQuery("something nice")).toEqual({});
+  });
+
+  it("maps wedding to owambe and swim to street", () => {
+    expect(parseNaturalQuery("wedding guest dress").occasion).toBe("owambe");
+    expect(parseNaturalQuery("swim party").occasion).toBe("owambe");
+    expect(parseNaturalQuery("beach day").occasion).toBe("street");
+  });
+});
+
+describe("filterListings", () => {
+  const catalog = [
+    { occasion: "owambe", priceNgn: 40000, sizes: ["S", "M"] },
+    { occasion: "street", priceNgn: 90000, sizes: ["L"] },
+  ];
+
+  it("shares one predicate across callers", () => {
+    expect(filterListings(catalog, {})).toHaveLength(2);
+    expect(filterListings(catalog, { occasion: "owambe", maxBudgetNgn: 50000, size: "m" })).toHaveLength(1);
   });
 });
 

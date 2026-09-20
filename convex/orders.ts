@@ -1,4 +1,5 @@
 import { mutation, query } from "./_generated/server";
+import { api } from "./_generated/api";
 import { v } from "convex/values";
 
 export const place = mutation({
@@ -7,6 +8,7 @@ export const place = mutation({
     size: v.string(),
     buyerName: v.string(),
     buyerPhone: v.string(),
+    groupId: v.optional(v.string()),
   },
   handler: async (ctx, args) => {
     const listing = await ctx.db.get("listings", args.listingId);
@@ -23,6 +25,7 @@ export const place = mutation({
       buyerName: args.buyerName.trim(),
       buyerPhone: args.buyerPhone.trim(),
       status: "placed",
+      groupId: args.groupId,
     });
     await ctx.db.insert("inboxEvents", {
       orderId,
@@ -31,6 +34,9 @@ export const place = mutation({
       body: `${args.buyerName.trim()} (${args.buyerPhone.trim()}) ordered ${listing.title} size ${args.size.trim()} for ₦${listing.priceNgn.toLocaleString("en-NG")}.`,
       status: "placed",
     });
+    // Vendor notification is part of placing the order, not a separate step
+    // the UI can forget. It records its own timeline event on success or failure.
+    await ctx.scheduler.runAfter(0, api.email.notifyVendor, { orderId });
     return orderId;
   },
 });
@@ -58,5 +64,27 @@ export const listByVendor = query({
       .withIndex("by_vendor", (q) => q.eq("vendorId", args.vendorId))
       .order("desc")
       .take(50);
+  },
+});
+
+export const byGroup = query({
+  args: { groupId: v.string() },
+  handler: async (ctx, args) => {
+    const orders = await ctx.db
+      .query("orders")
+      .withIndex("by_group", (q) => q.eq("groupId", args.groupId))
+      .order("asc")
+      .take(50);
+    return await Promise.all(
+      orders.map(async (order) => {
+        const listing = await ctx.db.get("listings", order.listingId);
+        const events = await ctx.db
+          .query("inboxEvents")
+          .withIndex("by_order", (q) => q.eq("orderId", order._id))
+          .order("asc")
+          .take(50);
+        return { order, listing, events };
+      }),
+    );
   },
 });

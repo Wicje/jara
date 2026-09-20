@@ -7,21 +7,18 @@ export const list = query({
     vendorId: v.optional(v.id("vendors")),
   },
   handler: async (ctx, args) => {
-    if (args.vendorId !== undefined) {
-      return await ctx.db
-        .query("listings")
-        .withIndex("by_vendor", (q) => q.eq("vendorId", args.vendorId as NonNullable<typeof args.vendorId>))
-        .order("desc")
-        .take(50);
-    }
-    if (args.occasion !== undefined) {
-      return await ctx.db
-        .query("listings")
-        .withIndex("by_occasion", (q) => q.eq("occasion", args.occasion as string))
-        .order("desc")
-        .take(50);
-    }
-    return await ctx.db.query("listings").order("desc").take(50);
+    // Only active listings are ever shown. Drafts from the importer stay
+    // hidden until a vendor approves them.
+    const active = await ctx.db
+      .query("listings")
+      .withIndex("by_status", (q) => q.eq("status", "active"))
+      .order("desc")
+      .take(200);
+    return active.filter((listing) => {
+      if (args.vendorId !== undefined && listing.vendorId !== args.vendorId) return false;
+      if (args.occasion !== undefined && listing.occasion !== args.occasion) return false;
+      return true;
+    });
   },
 });
 

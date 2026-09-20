@@ -31,7 +31,7 @@ export const saveDrafts = internalMutation({
         vendorId: args.vendorId,
         title: draft.title,
         priceNgn: draft.priceNgn,
-        sizes: ["8", "10", "12", "14"],
+        sizes: ["S", "M", "L", "XL"],
         fabric: "imported",
         occasion: "street",
         photoUrl: draft.photoUrl,

@@ -1,36 +1,65 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Jara — AI fashion market for Lagos
 
-## Getting Started
+Jara means extra value. Chat the occasion, budget, and size. Jara matches
+you with real pieces from Lagos boutiques. Order in one tap. The vendor
+confirms by email, and the order timeline updates live.
 
-First, run the development server:
+- **Live site:** https://usable-bee-860.convex.site
+- **Vendor:** https://usable-bee-860.convex.site/vendor
+- **Repo:** https://github.com/Wicje/jara (public)
+
+## Stack
+
+- **Backend:** Convex (database, functions, realtime sync, file storage, static hosting)
+- **Frontend:** Next.js + TypeScript + Tailwind, Untitled UI primitives
+- **AI:** OpenAI via server actions (BYO key; AI Gateway is paid-only)
+- **Catalog:** Firecrawl scrapes the vendor WooCommerce store into listings
+- **Inbox:** AgentMail order threads (outbound to vendor, inbound reply via webhook)
+
+## Run locally
 
 ```bash
+npm install
+npx convex dev        # creates convex/_generated + sets CONVEX_URL in .env.local
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Seed the catalog (dev):
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+npx convex run seed:seedDera '{}'        # first seed
+npx convex run seed:replaceCatalog '{}'  # replace with Firecrawl-fed data
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Environment variables
 
-## Learn More
+Set on the Convex deployment (`npx convex env set KEY value`, add `--prod`
+for production). Never commit keys.
 
-To learn more about Next.js, take a look at the following resources:
+| Variable | Required | Purpose |
+|---|---|---|
+| `CONVEX_DEPLOYMENT` | dev only | selects the dev deployment (set by `npx convex dev`) |
+| `NEXT_PUBLIC_CONVEX_URL` | yes | frontend Convex endpoint (`.env.local`) |
+| `OPENAI_API_KEY` | for AI concierge | server-action model access |
+| `AGENTMAIL_API_KEY` | for real order emails | AgentMail send API |
+| `AGENTMAIL_INBOX_ID` | for real order emails | sending inbox |
+| `AGENTMAIL_WEBHOOK_SECRET` | recommended | verifies inbound vendor replies |
+| `FIRECRAWL_API_KEY` | for real crawls | vendor importer |
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Without `AGENTMAIL_*` keys, order emails are recorded as queued timeline
+events so the demo still runs. Without `FIRECRAWL_API_KEY`, the importer
+dry-runs honestly. Vendor email must be on the vendor record or sends queue.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Checks
 
-## Deploy on Vercel
+```bash
+npm run lint && npm run build
+npm run test:unit
+npx playwright test
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Deploy
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```bash
+npm run deploy   # backend to prod + static frontend to convex.site
+```

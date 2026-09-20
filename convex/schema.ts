@@ -7,6 +7,7 @@ export default defineSchema({
     area: v.string(),
     instagramUrl: v.string(),
     whatsapp: v.optional(v.string()),
+    email: v.optional(v.string()),
     inboxId: v.optional(v.string()),
   }),
   listings: defineTable({
@@ -38,9 +39,11 @@ export default defineSchema({
     buyerPhone: v.string(),
     status: v.string(),
     threadId: v.optional(v.string()),
+    groupId: v.optional(v.string()),
   })
     .index("by_vendor", ["vendorId"])
-    .index("by_listing", ["listingId"]),
+    .index("by_listing", ["listingId"])
+    .index("by_group", ["groupId"]),
   inboxEvents: defineTable({
     orderId: v.id("orders"),
     direction: v.string(),

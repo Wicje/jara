@@ -7,20 +7,39 @@ export interface ConciergeFilter {
 }
 
 export function recommendListings(filter: ConciergeFilter): SeedListing[] {
+  return filterListings(DERA_LISTINGS, filter).slice(0, 3);
+}
+
+export interface FilterableListing {
+  occasion: string;
+  priceNgn: number;
+  sizes: string[];
+}
+
+export function filterListings<T extends FilterableListing>(listings: T[], filter: ConciergeFilter): T[] {
   const occasion = filter.occasion?.trim().toLowerCase();
   const size = filter.size?.trim().toUpperCase();
-  return DERA_LISTINGS.filter((listing) => {
+  return listings.filter((listing) => {
     if (occasion && listing.occasion !== occasion) return false;
     if (filter.maxBudgetNgn !== undefined && listing.priceNgn > filter.maxBudgetNgn) return false;
     if (size && !listing.sizes.map((s) => s.toUpperCase()).includes(size)) return false;
     return true;
-  }).slice(0, 3);
+  });
+}
+
+export function activeFilter(occasion: string, budget: string, size: string): ConciergeFilter {
+  const maxBudgetNgn = budget.trim() === "" ? undefined : Number(budget);
+  return {
+    occasion: occasion.trim() === "" ? undefined : occasion.trim().toLowerCase(),
+    maxBudgetNgn: maxBudgetNgn !== undefined && Number.isFinite(maxBudgetNgn) ? maxBudgetNgn : undefined,
+    size: size.trim() === "" ? undefined : size,
+  };
 }
 
 const OCCASION_WORDS: Array<[RegExp, string]> = [
-  [/\baso[\s-]?ebi\b|\bowambe\b|\bparty\b|\owedding\b/i, "owambe"],
+  [/\baso[\s-]?ebi\b|\bowambe\b|\bparty\b|\bwedding\b/i, "owambe"],
   [/\bchurch\b|\boffice\b|\bwork\b/i, "church"],
-  [/\bstreet\b|\bcasual\b|\bday\b/i, "street"],
+  [/\bstreet\b|\bcasual\b|\bday\b|\bswim\b|\bbeach\b/i, "street"],
 ];
 
 export function parseNaturalQuery(input: string): ConciergeFilter {
