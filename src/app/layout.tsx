@@ -1,18 +1,19 @@
 import type { Metadata } from "next";
-import { Open_Sans, Roboto_Condensed } from "next/font/google";
+import { EB_Garamond, Montserrat } from "next/font/google";
 import { Providers } from "./providers";
 import { CartProvider } from "@/components/cart-provider";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import "./globals.css";
 
-const display = Roboto_Condensed({
-  weight: ["400", "700"],
+const display = EB_Garamond({
+  weight: ["400", "500", "600", "700"],
   subsets: ["latin"],
   variable: "--font-display",
 });
 
-const sans = Open_Sans({
+const sans = Montserrat({
+  weight: ["400", "500", "600", "700"],
   subsets: ["latin"],
   variable: "--font-sans",
 });

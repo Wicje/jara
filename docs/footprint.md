@@ -17,8 +17,8 @@
 - **Env / secrets needed:** OPENAI_API_KEY (BYO, server actions only), FIRECRAWL_API_KEY, AGENTMAIL_API_KEY, CONVEX_URL
 
 ## 2. Current state (update every task — 3 lines max)
-- **Last known good:** 2026-09-21 — persona fixes green: lint clean, build, unit 15 pass, e2e 3 pass
-- **Now working on:** Human inputs and submission assets; persona batch needs redeploy to convex.site
+- **Last known good:** 2026-09-21 — Montserrat/Garamond type swap green: build, e2e 3 pass, baseline updated
+- **Now working on:** Submission assets (demo video, social post, vibeapps)
 - **Blocked / needs human:** Dera's EMAIL address; Dera to confirm sizes/fabrics; AGENTMAIL_INBOX_ID still missing (sends queue without it)
 
 ## 3. Decisions (why, not what — append, never rewrite)
@@ -156,3 +156,8 @@
 - Reason: activate vendor orders view + real sends/OTP delivery
 - Checks: checkPin true on correct PIN, false on wrong PIN
 - Notes: AGENTMAIL_INBOX_ID still missing so sends still queue; prod code deploy still pending
+## 2026-09-21 — Pushed + deployed to prod
+- Changed: committed b93c3e7, pushed to GitHub; backend via `convex deploy --yes`; frontend via static-hosting --skip-convex
+- Reason: ship redesign + persona batch to the live business URL
+- Checks: live site verified at runtime — 57 owambe + 26 church + 15 street = 98 listings, new UI serving
+- Notes: non-interactive deploy needs --yes flag; static HTML shows 0 counts pre-hydration (normal); INBOX_ID still missing
