@@ -38,8 +38,8 @@ function useRevealOnce() {
 function ConciergeTeaser() {
   return (
     <Link
-      href="/catalog"
-      aria-label="Try the concierge — browse the catalog"
+      href="/chat"
+      aria-label="Try the concierge — chat with Jara"
       className="group block overflow-hidden rounded-lg border border-white/20 bg-white/10 shadow-[inset_0_4px_20px_0_rgba(255,255,255,0.12)] backdrop-blur-2xl transition-transform duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blush active:scale-[0.99]"
     >
       <div className="flex flex-col gap-2 p-5 sm:p-6">

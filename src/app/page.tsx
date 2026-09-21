@@ -8,7 +8,6 @@ import { ArrowRight, InstagramLogo, MagnifyingGlass } from "@phosphor-icons/reac
 import { useQuery } from "convex/react";
 import { api } from "../../convex/_generated/api";
 import { DERA_LISTINGS, DERA_VENDOR } from "@/data/dera";
-import { parseNaturalQuery } from "@/lib/concierge";
 import { getReceipts } from "@/lib/shopper";
 import { isConvexConfigured } from "./providers";
 import { Button } from "@/components/ui/button";
@@ -17,6 +16,7 @@ import { Input } from "@/components/ui/input";
 import { Text } from "@/components/ui/text";
 import { ProductCard, ProductCardSkeleton } from "@/components/product-card";
 import type { ProductCardItem } from "@/components/product-card";
+import { HeroArt } from "@/components/concierge-hero";
 
 const OCCASIONS = ["owambe", "church", "street"] as const;
 
@@ -118,12 +118,12 @@ function Hero({ photos }: { photos: string[] }) {
   const [query, setQuery] = useState("");
 
   function askJara() {
-    const parsed = parseNaturalQuery(query);
-    const params = new URLSearchParams();
-    if (parsed.occasion) params.set("occasion", parsed.occasion);
-    if (parsed.maxBudgetNgn !== undefined) params.set("budget", String(parsed.maxBudgetNgn));
-    if (parsed.size) params.set("size", parsed.size);
-    router.push(`/catalog${params.size > 0 ? `?${params.toString()}` : ""}`);
+    const text = query.trim();
+    if (text === "") {
+      router.push("/chat");
+    } else {
+      router.push(`/chat?q=${encodeURIComponent(text)}`);
+    }
   }
 
   return (
@@ -166,21 +166,7 @@ function Hero({ photos }: { photos: string[] }) {
             </Button>
           </form>
         </div>
-        <div className="grid grid-cols-3 gap-2 rounded-lg bg-blush-soft p-2 sm:gap-3 sm:p-3" aria-hidden="true">
-          {photos.slice(0, 3).map((photo, index) => (
-            <div key={photo} className={`overflow-hidden rounded-lg ${index === 1 ? "mt-6" : ""}`}>
-              <Image
-                src={photo}
-                alt=""
-                width={400}
-                height={533}
-                sizes="(max-width: 1024px) 30vw, 20vw"
-                className="aspect-[3/4] w-full object-cover"
-                priority={index === 0}
-              />
-            </div>
-          ))}
-        </div>
+        <HeroArt photos={photos} />
       </div>
     </section>
   );

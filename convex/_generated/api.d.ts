@@ -16,6 +16,7 @@ import type * as listings from "../listings.js";
 import type * as orders from "../orders.js";
 import type * as seed from "../seed.js";
 import type * as stats from "../stats.js";
+import type * as threads from "../threads.js";
 import type * as vendors from "../vendors.js";
 import type * as verify from "../verify.js";
 
@@ -34,6 +35,7 @@ declare const fullApi: ApiFromModules<{
   orders: typeof orders;
   seed: typeof seed;
   stats: typeof stats;
+  threads: typeof threads;
   vendors: typeof vendors;
   verify: typeof verify;
 }>;

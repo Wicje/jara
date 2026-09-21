@@ -1,17 +1,12 @@
 import { test, expect } from "@playwright/test";
+import { trackConsoleErrors } from "./console-track";
 
 test.use({ viewport: { width: 375, height: 667 } });
 
 test("mobile store fits 375px: header, hero, occasions, product links", async ({ page }) => {
   // Cold dev servers + live backend can be very slow in shared environments.
   test.setTimeout(120000);
-  const errors: string[] = [];
-  page.on("console", (message) => {
-    // Remote image CDN flakiness is environmental, not an app bug.
-    if (message.type() === "error" && !message.text().startsWith("Failed to load resource")) {
-      errors.push(message.text());
-    }
-  });
+  const errors = trackConsoleErrors(page);
 
   await page.goto("/");
   await expect(page.getByRole("banner")).toBeVisible();

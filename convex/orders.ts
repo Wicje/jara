@@ -105,6 +105,20 @@ export const checkPin = query({
   },
 });
 
+const VENDOR_STATUSES = ["placed", "confirmed", "flagged"];
+
+export const setStatus = mutation({
+  args: { orderId: v.id("orders"), status: v.string(), pin: v.string() },
+  handler: async (ctx, args) => {
+    const expected = process.env.VENDOR_PIN;
+    if (!expected) throw new Error("Vendor PIN is not configured. Set VENDOR_PIN on the deployment.");
+    if (args.pin !== expected) throw new Error("Wrong PIN");
+    if (!VENDOR_STATUSES.includes(args.status)) throw new Error("Unknown status");
+    await ctx.db.patch(args.orderId, { status: args.status });
+    return { updated: args.orderId };
+  },
+});
+
 export const listByVendor = query({
   args: { vendorId: v.id("vendors"), pin: v.string() },
   handler: async (ctx, args) => {

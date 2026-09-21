@@ -16,7 +16,7 @@ test("homepage matches baseline visual", async ({ page }) => {
       page.getByRole("list", { name: "Products" }),
       page.getByRole("list", { name: "Budget picks" }),
       page.getByRole("list", { name: "Past orders" }),
-      page.locator("section[aria-label='Find your fit'] div.grid"),
+      page.getByLabel("Hero backdrop photo"),
     ],
   });
 });

@@ -17,8 +17,8 @@
 - **Env / secrets needed:** OPENAI_API_KEY (BYO, server actions only), FIRECRAWL_API_KEY, AGENTMAIL_API_KEY, CONVEX_URL
 
 ## 2. Current state (update every task — 3 lines max)
-- **Last known good:** 2026-09-21 — Otto-pattern footer green: lint clean, build, unit 22 pass, e2e 3 pass
-- **Now working on:** Phase 0 agent chat (needs OpenAI key); sister onboarding; submission assets
+- **Last known good:** 2026-09-21 — hero/chat/vendor-table batch green: lint, build, unit 29, e2e 4
+- **Now working on:** Phase 0 LLM agent (needs OpenAI key); submission assets
 - **Blocked / needs human:** Dera's EMAIL address; Dera to confirm sizes/fabrics; AGENTMAIL_INBOX_ID still missing (sends queue without it)
 
 ## 3. Decisions (why, not what — append, never rewrite)
@@ -166,3 +166,8 @@
 - Reason: adapt Otto reference to Jara brand/tokens/routes
 - Checks: lint clean, build pass, unit 22 pass, e2e 3 pass, baseline unchanged
 - Notes: no framer/lucide/cn/tooltip deps added; tooltips are native title+aria; uncommitted
+## 2026-09-21 — Hero art, chat UI, vendor table
+- Changed: concierge-hero (browser mock + draggable card, real data); /chat with composer + deterministic brain + threads; vendor orders table with status menu; serial e2e workers
+- Reason: integrate Finlayer/composer/table patterns for hero, chat, vendor flows
+- Checks: lint clean, build pass, unit 29 pass, e2e 4 pass
+- Notes: no framer/lucide/cn deps; LLM agent still needs OPENAI_API_KEY; uncommitted
