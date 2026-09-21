@@ -19,7 +19,7 @@ const tones: Record<Tone, string> = {
   muted: "text-smoke",
   error: "text-red-800",
   success: "text-green-800",
-  accent: "text-gold",
+  accent: "text-violet",
 };
 
 const defaultTone: Record<Element, string> = {

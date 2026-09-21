@@ -16,6 +16,8 @@ import { Button, buttonClasses } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { ChipGroup } from "@/components/filter-chips";
+import { ShareButton } from "@/components/share-button";
+import { WishlistButton } from "@/components/product-card";
 import { Container } from "@/components/ui/container";
 import { Text } from "@/components/ui/text";
 
@@ -33,9 +35,9 @@ function ProductDetail() {
   if (listing === undefined) {
     return (
       <div className="mt-6 animate-pulse" aria-label="Loading product" aria-busy="true">
-        <div className="aspect-[3/4] w-full rounded-md bg-cream sm:max-w-md" />
-        <div className="mt-4 h-6 w-2/3 rounded bg-cream" />
-        <div className="mt-2 h-6 w-1/3 rounded bg-cream" />
+        <div className="aspect-[3/4] w-full rounded-md bg-mist sm:max-w-md" />
+        <div className="mt-4 h-6 w-2/3 rounded bg-mist" />
+        <div className="mt-2 h-6 w-1/3 rounded bg-mist" />
       </div>
     );
   }
@@ -54,6 +56,10 @@ function ProductDetail() {
   const vendorName = vendors?.[0]?.name ?? DERA_VENDOR.name;
   const chosenSize = size === "" ? currentListing.sizes[0] : size;
   const whatsappText = `Hi Dera! I want the ${currentListing.title} (${chosenSize}) I saw on Jara.`;
+  const stock = currentListing.stock;
+  const soldOut = stock !== undefined && stock <= 0;
+  const lowStock = stock !== undefined && stock > 0 && stock <= 3;
+  const onSale = currentListing.compareAtNgn !== undefined && currentListing.compareAtNgn > currentListing.priceNgn;
 
   function addToCart() {
     addItem({
@@ -68,7 +74,7 @@ function ProductDetail() {
 
   return (
     <div className="mt-6 grid gap-8 lg:grid-cols-2">
-      <div className="overflow-hidden rounded-md bg-cream">
+      <div className="overflow-hidden rounded-lg bg-blush-soft">
         <Image
           src={currentListing.photoUrl}
           alt={currentListing.title}
@@ -80,14 +86,32 @@ function ProductDetail() {
         />
       </div>
       <div className="pb-24 lg:pb-0">
-        <div className="flex flex-wrap gap-2">
-          <Badge color="palm">
+        <div className="flex flex-wrap items-center gap-2">
+          <Badge color="violet">
             <span className="capitalize">For {currentListing.occasion}</span>
           </Badge>
-          <Badge color="success">In stock</Badge>
+          {soldOut ? (
+            <Badge color="ink">Sold out</Badge>
+          ) : lowStock ? (
+            <Badge color="blush">Only {stock} left</Badge>
+          ) : (
+            <Badge color="success">In stock</Badge>
+          )}
+          {onSale && <Badge color="blush">Save {formatNgn(currentListing.compareAtNgn! - currentListing.priceNgn)}</Badge>}
+          <span className="ml-auto flex items-center">
+            <WishlistButton listingId={currentListing._id} title={currentListing.title} />
+            <ShareButton title={currentListing.title} priceNgn={currentListing.priceNgn} listingId={currentListing._id} />
+          </span>
         </div>
         <h1 className="mt-3 font-sans text-2xl leading-tight font-bold text-ink sm:text-3xl">{currentListing.title}</h1>
-        <p className="mt-2 font-display text-4xl tracking-wide text-palm tabular-nums">{formatNgn(currentListing.priceNgn)}</p>
+        <p className="mt-2 font-display text-4xl tracking-wide text-violet-deep tabular-nums">
+          {formatNgn(currentListing.priceNgn)}{" "}
+          {onSale && (
+            <span className="font-sans text-xl font-normal text-smoke line-through tabular-nums">
+              {formatNgn(currentListing.compareAtNgn!)}
+            </span>
+          )}
+        </p>
         <p className="mt-2 font-sans text-sm text-smoke">
           {currentListing.fabric} · Same-day delivery in Lagos
         </p>
@@ -112,7 +136,11 @@ function ProductDetail() {
         </div>
 
         <div className="mt-6 hidden flex-col gap-2 sm:flex-row lg:flex">
-          {added ? (
+          {soldOut ? (
+            <Button variant="secondary" disabled>
+              Sold out
+            </Button>
+          ) : added ? (
             <Button variant="secondary" onClick={() => router.push("/cart")}>
               Added. View cart
             </Button>
@@ -135,7 +163,7 @@ function ProductDetail() {
 
         <p className="mt-6 font-sans text-sm leading-6 text-ink/80">
           Sold by{" "}
-          <Link href="/store" className="font-semibold text-palm underline">
+          <Link href="/store" className="font-semibold text-violet-deep underline">
             {vendorName}
           </Link>
           . {DERA_VENDOR.byline} in Lagos.
@@ -148,7 +176,11 @@ function ProductDetail() {
       </div>
 
       <div className="fixed inset-x-0 bottom-0 z-40 border-t border-line bg-paper/95 px-4 pt-3 pb-[calc(0.75rem+env(safe-area-inset-bottom))] backdrop-blur lg:hidden">
-        {added ? (
+        {soldOut ? (
+          <Button className="w-full" size="lg" variant="secondary" disabled>
+            Sold out
+          </Button>
+        ) : added ? (
           <Button className="w-full" size="lg" variant="secondary" onClick={() => router.push("/cart")}>
             Added. View cart
           </Button>

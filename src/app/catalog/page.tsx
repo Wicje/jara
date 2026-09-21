@@ -44,6 +44,8 @@ function Catalog() {
       id: l._id,
       title: l.title,
       priceNgn: l.priceNgn,
+      compareAtNgn: l.compareAtNgn,
+      stock: l.stock,
       occasion: l.occasion,
       photoUrl: l.photoUrl,
     }));
@@ -59,7 +61,7 @@ function Catalog() {
 
   return (
     <>
-      <div className="mt-6 rounded-lg bg-cream p-4 sm:p-5">
+      <div className="mt-6 rounded-lg bg-mist p-4 sm:p-5">
         <div className="grid gap-4">
           <ChipGroup label="Occasion" options={OCCASION_OPTIONS} current={occasion} onSelect={setOccasion} />
           <div className="grid gap-4 sm:grid-cols-3">
@@ -71,7 +73,7 @@ function Catalog() {
                 id="sort"
                 value={sort}
                 onChange={(e) => setSort(e.target.value as Sort)}
-                className="h-11 rounded-md border border-ink/20 bg-white px-3 font-sans text-sm text-ink focus:border-palm focus:outline-none focus:ring-2 focus:ring-palm/40"
+                className="h-11 rounded-md border border-ink/20 bg-white px-3 font-sans text-sm text-ink focus:border-violet focus:outline-none focus:ring-2 focus:ring-violet/40"
               >
                 <option value="newest">Newest</option>
                 <option value="price-asc">Price low to high</option>
@@ -126,7 +128,7 @@ export default function CatalogPage() {
   return (
     <main>
       <Container className="pt-8 pb-4 sm:pt-10">
-        <p className="font-sans text-xs font-bold tracking-[0.2em] text-gold uppercase">The market</p>
+        <p className="font-sans text-xs font-bold tracking-[0.2em] text-violet uppercase">The market</p>
         <h1 className="mt-2 font-display text-4xl tracking-wide text-ink uppercase sm:text-5xl">
           Browse everything
         </h1>

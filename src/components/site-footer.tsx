@@ -3,10 +3,11 @@
 import Link from "next/link";
 import { InstagramLogo, WhatsappLogo } from "@phosphor-icons/react";
 import { DERA_VENDOR } from "@/data/dera";
+import { DELIVERY_OPTIONS } from "@/data/delivery";
 
 export function SiteFooter() {
   return (
-    <footer className="mt-20 border-t border-line bg-cream">
+    <footer className="mt-20 border-t border-line bg-mist">
       <div className="mx-auto grid w-full max-w-6xl gap-10 px-4 py-12 sm:grid-cols-4 sm:px-6">
         <div>
           <p className="font-display text-3xl tracking-wide text-ink">JARA</p>
@@ -22,13 +23,17 @@ export function SiteFooter() {
             <li><Link href="/catalog?occasion=church" className="hover:text-ink">Church</Link></li>
             <li><Link href="/catalog?occasion=street" className="hover:text-ink">Street</Link></li>
             <li><Link href="/cart" className="hover:text-ink">Your cart</Link></li>
+            <li><Link href="/wishlist" className="hover:text-ink">Your wishlist</Link></li>
           </ul>
         </nav>
         <div>
           <p className="font-sans text-xs font-bold tracking-[0.14em] text-smoke uppercase">Delivery and exchanges</p>
           <ul className="mt-3 grid gap-2.5 font-sans text-sm text-ink/80">
-            <li>Same-day delivery in Lagos.</li>
-            <li>Nationwide and international delivery available.</li>
+            {DELIVERY_OPTIONS.map((option) => (
+              <li key={option.label}>
+                {option.label} · {option.priceNote}. {option.detail}
+              </li>
+            ))}
             <li>Need an exchange? Message Dera on WhatsApp and she will sort you out.</li>
           </ul>
         </div>

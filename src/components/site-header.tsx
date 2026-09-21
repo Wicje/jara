@@ -55,11 +55,11 @@ export function SiteHeader() {
           <Link
             href="/cart"
             aria-label={`Cart, ${count} items`}
-            className="relative inline-flex min-h-11 min-w-11 shrink-0 items-center justify-center rounded-full bg-palm px-3 font-sans text-sm font-semibold text-white transition-all hover:bg-palm-deep active:scale-[0.97]"
+            className="relative inline-flex min-h-[42px] min-w-[42px] shrink-0 items-center justify-center rounded-[32px] bg-ink px-3 font-sans text-sm font-semibold text-white transition-all hover:bg-black active:scale-[0.97]"
           >
             <ShoppingBag size={18} weight="bold" aria-hidden="true" />
             {count > 0 && (
-              <span aria-hidden="true" className="absolute -top-1.5 -right-1.5 flex h-5 min-w-5 items-center justify-center rounded-full bg-gold px-1 text-[11px] font-bold text-white">
+              <span aria-hidden="true" className="absolute -top-1.5 -right-1.5 flex h-5 min-w-5 items-center justify-center rounded-full bg-violet px-1 text-[11px] font-bold text-white">
                 {count}
               </span>
             )}

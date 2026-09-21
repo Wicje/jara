@@ -17,27 +17,29 @@ function Storefront() {
     id: l._id,
     title: l.title,
     priceNgn: l.priceNgn,
+    compareAtNgn: l.compareAtNgn,
+    stock: l.stock,
     occasion: l.occasion,
     photoUrl: l.photoUrl,
   }));
 
   return (
     <>
-      <section aria-label="About the store" className="overflow-hidden rounded-xl bg-palm-deep text-paper">
+      <section aria-label="About the store" className="overflow-hidden rounded-lg border border-line bg-white">
         <div className="flex flex-col gap-5 p-6 sm:flex-row sm:items-center sm:p-10">
           <Image
             src="/dera/dera-01.jpg"
             alt="Style in Lagos boutique"
             width={240}
             height={240}
-            className="h-24 w-24 shrink-0 rounded-full object-cover ring-2 ring-gold-soft/60 sm:h-32 sm:w-32"
+            className="h-24 w-24 shrink-0 rounded-full object-cover ring-2 ring-blush sm:h-32 sm:w-32"
           />
           <div>
-            <p className="font-sans text-xs font-bold tracking-[0.2em] text-gold-soft uppercase">
+            <p className="font-sans text-xs font-bold tracking-[0.2em] text-violet uppercase">
               {DERA_VENDOR.byline} · {DERA_VENDOR.area}
             </p>
-            <h1 className="mt-2 font-display text-4xl tracking-wide uppercase sm:text-6xl">{DERA_VENDOR.name}</h1>
-            <p className="mt-3 max-w-xl font-sans text-base leading-7 text-paper/80">
+            <h1 className="mt-2 font-display text-4xl tracking-wide text-ink uppercase sm:text-6xl">{DERA_VENDOR.name}</h1>
+            <p className="mt-3 max-w-xl font-sans text-base leading-7 text-ink/70">
               New arrivals daily. Same-day delivery in Lagos, nationwide and international delivery on request. Every
               piece below is in stock now{live === undefined ? "" : `, all ${items.length} of them`}.
             </p>
@@ -55,7 +57,7 @@ function Storefront() {
                 href={DERA_VENDOR.instagramUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex min-h-11 items-center justify-center gap-2 rounded-full px-5 font-sans text-sm font-semibold text-paper ring-1 ring-paper/40 ring-inset transition-all hover:bg-white/10 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-paper"
+                className="inline-flex min-h-[42px] items-center justify-center gap-2 rounded-[32px] px-5 font-sans text-sm font-semibold text-ink ring-1 ring-ink/25 ring-inset transition-all hover:bg-mist active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet"
               >
                 <InstagramLogo size={16} aria-hidden="true" />
                 Instagram

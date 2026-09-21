@@ -1,18 +1,18 @@
 @import "tailwindcss";
 
 @theme {
-  --font-display: "Anton", "Arial Narrow", Impact, sans-serif;
-  --font-sans: "Archivo", system-ui, -apple-system, sans-serif;
+  --font-display: "Roboto Condensed", "Arial Narrow", sans-serif;
+  --font-sans: "Open Sans", system-ui, -apple-system, sans-serif;
 
-  --color-paper: #faf8f4;
-  --color-cream: #f3eee1;
-  --color-ink: #16130e;
-  --color-smoke: #6f6558;
-  --color-line: #e5dccb;
-  --color-palm: #1e4d3b;
-  --color-palm-deep: #122e23;
-  --color-gold: #b45309;
-  --color-gold-soft: #f5e6c8;
+  --color-paper: #ffffff;
+  --color-mist: #f4f4f5;
+  --color-ink: #333333;
+  --color-smoke: #737373;
+  --color-line: #e5e7eb;
+  --color-violet: #720eec;
+  --color-violet-deep: #5407b4;
+  --color-blush: #f4bec6;
+  --color-blush-soft: #fdf0f3;
 
   --animate-marquee: marquee 30s linear infinite;
 

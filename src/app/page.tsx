@@ -4,19 +4,114 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { ArrowRight, MagnifyingGlass } from "@phosphor-icons/react";
+import { ArrowRight, InstagramLogo, MagnifyingGlass } from "@phosphor-icons/react";
 import { useQuery } from "convex/react";
 import { api } from "../../convex/_generated/api";
 import { DERA_LISTINGS, DERA_VENDOR } from "@/data/dera";
 import { parseNaturalQuery } from "@/lib/concierge";
+import { getReceipts } from "@/lib/shopper";
 import { isConvexConfigured } from "./providers";
 import { Button } from "@/components/ui/button";
 import { Container } from "@/components/ui/container";
 import { Input } from "@/components/ui/input";
 import { Text } from "@/components/ui/text";
 import { ProductCard, ProductCardSkeleton } from "@/components/product-card";
+import type { ProductCardItem } from "@/components/product-card";
 
 const OCCASIONS = ["owambe", "church", "street"] as const;
+
+function toCardItem(l: {
+  _id: string;
+  title: string;
+  priceNgn: number;
+  compareAtNgn?: number;
+  stock?: number;
+  occasion: string;
+  photoUrl: string;
+}): ProductCardItem {
+  return {
+    id: l._id,
+    title: l.title,
+    priceNgn: l.priceNgn,
+    compareAtNgn: l.compareAtNgn,
+    stock: l.stock,
+    occasion: l.occasion,
+    photoUrl: l.photoUrl,
+  };
+}
+
+function BuyAgain() {
+  const [receipts] = useState(getReceipts);
+  const latest = receipts[0];
+  if (!latest || latest.items.length === 0) return null;
+  return (
+    <section aria-label="Buy again" className="mt-12">
+      <div className="flex items-baseline justify-between">
+        <h2 className="font-display text-3xl tracking-wide text-ink uppercase sm:text-4xl">Buy again</h2>
+        <Link href="/catalog" className="font-sans text-sm font-semibold text-violet-deep underline">
+          Browse all
+        </Link>
+      </div>
+      <ul className="mt-4 grid grid-cols-2 gap-x-3 gap-y-6 sm:gap-x-4 lg:grid-cols-3" aria-label="Past orders">
+        {latest.items.slice(0, 3).map((item) => (
+          <ProductCard
+            key={`${item.listingId}-${item.size}`}
+            item={{
+              id: item.listingId,
+              title: item.title,
+              priceNgn: item.priceNgn,
+              occasion: "",
+              photoUrl: item.photoUrl,
+            }}
+          />
+        ))}
+      </ul>
+    </section>
+  );
+}
+
+function GramStrip() {
+  const tiles = DERA_LISTINGS.slice(0, 3);
+  return (
+    <section aria-label="Shop the gram" className="mt-12 overflow-hidden rounded-lg bg-ink text-white">
+      <div className="flex flex-col gap-5 p-6 sm:p-10 lg:flex-row lg:items-center">
+        <div className="flex-1">
+          <p className="font-sans text-xs font-bold tracking-[0.2em] text-blush uppercase">Shop the gram</p>
+          <h2 className="mt-2 font-display text-3xl tracking-wide uppercase sm:text-4xl">
+            As worn on Instagram
+          </h2>
+          <p className="mt-3 max-w-md font-sans text-base leading-7 text-white/80">
+            Follow {DERA_VENDOR.name} for daily drops, then order the look here in one tap.
+          </p>
+          <a
+            href={DERA_VENDOR.instagramUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mt-5 inline-flex min-h-[42px] items-center gap-2 rounded-[32px] bg-white px-5 font-sans text-sm font-semibold text-ink transition-all hover:bg-blush-soft active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blush"
+          >
+            <InstagramLogo size={16} aria-hidden="true" />
+            Follow on Instagram
+          </a>
+        </div>
+        <div className="grid flex-1 grid-cols-3 gap-2 sm:gap-3" aria-hidden="true">
+          {tiles.map((tile) => (
+            <div key={tile.id} className="overflow-hidden rounded-lg">
+              <Image
+                src={tile.photoUrl}
+                alt=""
+                width={400}
+                height={533}
+                sizes="(max-width: 1024px) 30vw, 20vw"
+                className="aspect-[3/4] w-full object-cover"
+                loading="lazy"
+              />
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
 
 function Hero({ photos }: { photos: string[] }) {
   const router = useRouter();
@@ -32,20 +127,20 @@ function Hero({ photos }: { photos: string[] }) {
   }
 
   return (
-    <section aria-label="Find your fit" className="relative overflow-hidden rounded-xl bg-palm-deep text-paper">
+    <section aria-label="Find your fit" className="relative overflow-hidden rounded-lg border border-line bg-white">
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-0 bg-[radial-gradient(34rem_24rem_at_88%_8%,rgba(245,230,200,0.16),transparent_62%),radial-gradient(30rem_26rem_at_8%_92%,rgba(0,0,0,0.28),transparent_68%)]"
+        className="pointer-events-none absolute inset-0 bg-[radial-gradient(34rem_24rem_at_88%_8%,rgba(244,190,198,0.45),transparent_62%),radial-gradient(30rem_26rem_at_8%_92%,rgba(114,14,236,0.08),transparent_68%)]"
       />
       <div className="relative grid gap-6 p-6 sm:p-10 lg:grid-cols-2 lg:items-center">
         <div>
-          <p className="font-sans text-xs font-bold tracking-[0.2em] text-gold-soft uppercase">
+          <p className="font-sans text-xs font-bold tracking-[0.2em] text-violet uppercase">
             Lagos · Same-day delivery
           </p>
           <h1 className="mt-3 font-display text-5xl leading-[0.95] tracking-wide uppercase sm:text-7xl">
-            Dress like the party is yours
+            Dress like the <span className="text-violet">party</span> is yours
           </h1>
-          <p className="mt-4 max-w-md font-sans text-base leading-7 text-paper/80">
+          <p className="mt-4 max-w-md font-sans text-base leading-7 text-ink/80">
             Jara means extra value. Describe the occasion and budget. Real pieces from {DERA_VENDOR.name}.
           </p>
           <form
@@ -64,17 +159,16 @@ function Hero({ photos }: { photos: string[] }) {
               onChange={(e) => setQuery(e.target.value)}
               placeholder="Owambe dress under 100k, size M"
               aria-label="Describe what you're looking for"
-              className="border-transparent"
             />
-            <Button type="submit" size="lg" variant="accent" className="shrink-0">
+            <Button type="submit" size="lg" variant="primary" className="shrink-0">
               <MagnifyingGlass size={18} weight="bold" aria-hidden="true" />
               Ask Jara
             </Button>
           </form>
         </div>
-        <div className="grid grid-cols-3 gap-2 sm:gap-3" aria-hidden="true">
+        <div className="grid grid-cols-3 gap-2 rounded-lg bg-blush-soft p-2 sm:gap-3 sm:p-3" aria-hidden="true">
           {photos.slice(0, 3).map((photo, index) => (
-            <div key={photo} className={`overflow-hidden rounded-md ${index === 1 ? "mt-6" : ""}`}>
+            <div key={photo} className={`overflow-hidden rounded-lg ${index === 1 ? "mt-6" : ""}`}>
               <Image
                 src={photo}
                 alt=""
@@ -101,7 +195,7 @@ function OccasionRows({ photos, counts }: { photos: Record<string, string>; coun
           <li key={occasion}>
             <Link
               href={`/catalog?occasion=${occasion}`}
-              className="group flex items-center gap-4 py-3 transition-colors hover:bg-cream/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold"
+              className="group flex items-center gap-4 py-3 transition-colors hover:bg-mist focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet"
             >
               <span aria-hidden="true" className="w-8 shrink-0 font-display text-sm tracking-wide text-smoke tabular-nums">
                 {String(index + 1).padStart(2, "0")}
@@ -124,7 +218,7 @@ function OccasionRows({ photos, counts }: { photos: Record<string, string>; coun
                   {counts[occasion] ?? 0} pieces in stock
                 </span>
               </span>
-              <ArrowRight size={22} weight="bold" aria-hidden="true" className="shrink-0 text-palm transition-transform group-hover:translate-x-1" />
+              <ArrowRight size={22} weight="bold" aria-hidden="true" className="shrink-0 text-violet transition-transform group-hover:translate-x-1" />
             </Link>
           </li>
         ))}
@@ -144,22 +238,18 @@ function Landing() {
     if (!photos[listing.occasion]) photos[listing.occasion] = listing.photoUrl;
     if (heroPhotos.length < 3) heroPhotos.push(listing.photoUrl);
   }
-  const fresh = listings.slice(0, 6).map((l) => ({
-    id: l._id,
-    title: l.title,
-    priceNgn: l.priceNgn,
-    occasion: l.occasion,
-    photoUrl: l.photoUrl,
-  }));
+  const fresh = listings.slice(0, 6).map(toCardItem);
+  const budget = listings.filter((l) => l.priceNgn <= 50000).slice(0, 6).map(toCardItem);
 
   return (
     <>
       <Hero photos={heroPhotos} />
       <OccasionRows photos={photos} counts={counts} />
+      <BuyAgain />
       <section aria-label="New this week" className="mt-12">
         <div className="flex items-baseline justify-between">
           <h2 className="font-display text-3xl tracking-wide text-ink uppercase sm:text-4xl">New this week</h2>
-          <Link href="/catalog" className="font-sans text-sm font-semibold text-palm underline">
+          <Link href="/catalog" className="font-sans text-sm font-semibold text-violet-deep underline">
             Browse all
           </Link>
         </div>
@@ -177,6 +267,22 @@ function Landing() {
           </ul>
         )}
       </section>
+      {budget.length > 0 && (
+        <section aria-label="Under 50k" className="mt-12">
+          <div className="flex items-baseline justify-between">
+            <h2 className="font-display text-3xl tracking-wide text-ink uppercase sm:text-4xl">Under ₦50k</h2>
+            <Link href="/catalog?budget=50000" className="font-sans text-sm font-semibold text-violet-deep underline">
+              All budget picks
+            </Link>
+          </div>
+          <ul className="mt-4 grid grid-cols-2 gap-x-3 gap-y-6 sm:gap-x-4 lg:grid-cols-3" aria-label="Budget picks">
+            {budget.map((item) => (
+              <ProductCard key={item.id} item={item} />
+            ))}
+          </ul>
+        </section>
+      )}
+      <GramStrip />
     </>
   );
 }

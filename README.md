@@ -11,7 +11,7 @@ confirms by email, and the order timeline updates live.
 ## Stack
 
 - **Backend:** Convex (database, functions, realtime sync, file storage, static hosting)
-- **Frontend:** Next.js + TypeScript + Tailwind, Untitled UI primitives
+- **Frontend:** Next.js + TypeScript + Tailwind, custom Jara UI kit matching the vendor styleguide
 - **AI:** OpenAI via server actions (BYO key; AI Gateway is paid-only)
 - **Catalog:** Firecrawl scrapes the vendor WooCommerce store into listings
 - **Inbox:** AgentMail order threads (outbound to vendor, inbound reply via webhook)

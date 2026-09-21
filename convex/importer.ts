@@ -37,6 +37,7 @@ export const saveDrafts = internalMutation({
         photoUrl: draft.photoUrl,
         sourceUrl: draft.sourceUrl ?? args.sourceUrl,
         status: "draft",
+        stock: 8,
       });
       ids.push(id);
     }

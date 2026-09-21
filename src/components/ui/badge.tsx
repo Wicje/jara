@@ -2,11 +2,11 @@
 
 import type { ReactNode } from "react";
 
-type Color = "palm" | "gold" | "ink" | "success";
+type Color = "violet" | "blush" | "ink" | "success";
 
 const colors: Record<Color, string> = {
-  palm: "bg-palm/10 text-palm-deep ring-palm/25",
-  gold: "bg-gold-soft text-gold ring-gold/30",
+  violet: "bg-violet/10 text-violet-deep ring-violet/25",
+  blush: "bg-blush/40 text-violet-deep ring-violet/20",
   ink: "bg-ink/5 text-ink ring-ink/15",
   success: "bg-green-100 text-green-900 ring-green-700/20",
 };

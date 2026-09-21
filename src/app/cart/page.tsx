@@ -17,7 +17,7 @@ export default function CartPage() {
   return (
     <main>
       <Container className="pt-8 pb-4 sm:pt-10">
-        <p className="font-sans text-xs font-bold tracking-[0.2em] text-gold uppercase">Your bag</p>
+        <p className="font-sans text-xs font-bold tracking-[0.2em] text-violet uppercase">Your bag</p>
         <h1 className="mt-2 font-display text-4xl tracking-wide text-ink uppercase sm:text-5xl">
           Cart{items.length > 0 ? ` (${items.length})` : ""}
         </h1>
@@ -39,7 +39,7 @@ export default function CartPage() {
                   <Link
                     href={`/product?id=${item.listingId}`}
                     aria-label={item.title}
-                    className="shrink-0 overflow-hidden rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold"
+                    className="shrink-0 overflow-hidden rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet"
                   >
                     <Image
                       src={item.photoUrl}
@@ -54,7 +54,7 @@ export default function CartPage() {
                       <h2 className="truncate font-sans text-[15px] font-semibold text-ink">{item.title}</h2>
                     </Link>
                     <p className="mt-0.5 font-sans text-sm text-smoke">Size {item.size}</p>
-                    <p className="mt-1 font-display text-lg tracking-wide text-palm tabular-nums">
+                    <p className="mt-1 font-display text-lg tracking-wide text-violet-deep tabular-nums">
                       {formatNgn(item.priceNgn)}
                     </p>
                   </div>
@@ -62,14 +62,14 @@ export default function CartPage() {
                     type="button"
                     onClick={() => removeItem(item.listingId, item.size)}
                     aria-label={`Remove ${item.title} size ${item.size}`}
-                    className="inline-flex h-11 w-11 shrink-0 items-center justify-center self-start rounded-full text-smoke transition-colors hover:bg-cream hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold"
+                    className="inline-flex h-11 w-11 shrink-0 items-center justify-center self-start rounded-full text-smoke transition-colors hover:bg-mist hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet"
                   >
                     <Trash size={17} aria-hidden="true" />
                   </button>
                 </li>
               ))}
             </ul>
-            <div className="sticky bottom-4 mt-6 flex flex-col gap-3 rounded-md border border-line bg-palm-deep p-4 text-paper sm:flex-row sm:items-center sm:justify-between sm:p-5">
+            <div className="sticky bottom-4 mt-6 flex flex-col gap-3 rounded-lg border border-line bg-ink p-4 text-paper sm:flex-row sm:items-center sm:justify-between sm:p-5">
               <p className="font-display text-2xl tracking-wide tabular-nums">
                 Total {formatNgn(totalNgn)}
               </p>

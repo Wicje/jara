@@ -5,7 +5,7 @@ import type { HTMLAttributes } from "react";
 type Variant = "panel" | "outlined";
 
 const variants: Record<Variant, string> = {
-  panel: "rounded-lg bg-cream",
+  panel: "rounded-lg bg-blush-soft",
   outlined: "rounded-lg border border-line bg-white",
 };
 

@@ -4,9 +4,11 @@ import Link from "next/link";
 import { Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { useQuery } from "convex/react";
-import { CheckCircle, WhatsappLogo } from "@phosphor-icons/react";
+import { CheckCircle, Copy, WhatsappLogo } from "@phosphor-icons/react";
+import { useState } from "react";
 import { api } from "../../../convex/_generated/api";
 import { DERA_VENDOR } from "@/data/dera";
+import { CONFIRMATION_SLA } from "@/data/delivery";
 import { isConvexConfigured } from "../providers";
 import { Badge } from "@/components/ui/badge";
 import { buttonClasses } from "@/components/ui/button";
@@ -14,6 +16,37 @@ import { formatNgn } from "@/components/format";
 import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Container } from "@/components/ui/container";
 import { Text } from "@/components/ui/text";
+
+function ReceiptActions({ text }: { text: string }) {
+  const [copied, setCopied] = useState(false);
+
+  async function copyLink() {
+    try {
+      await navigator.clipboard.writeText(`${text} ${window.location.href}`);
+      setCopied(true);
+    } catch {
+      setCopied(false);
+    }
+  }
+
+  return (
+    <>
+      <button type="button" onClick={() => void copyLink()} className={buttonClasses({ variant: "secondary" })}>
+        <Copy size={16} aria-hidden="true" />
+        {copied ? "Link copied" : "Copy receipt link"}
+      </button>
+      <a
+        href={`${DERA_VENDOR.whatsappLink}?text=${encodeURIComponent(`${text} ${typeof window !== "undefined" ? window.location.href : ""}`)}`}
+        target="_blank"
+        rel="noopener noreferrer"
+        className={buttonClasses({ variant: "secondary" })}
+      >
+        <WhatsappLogo size={16} weight="bold" aria-hidden="true" />
+        Send receipt to my WhatsApp
+      </a>
+    </>
+  );
+}
 
 function Confirmation() {
   const params = useSearchParams();
@@ -40,15 +73,15 @@ function Confirmation() {
 
   return (
     <>
-      <section aria-label="Receipt" className="mt-6 overflow-hidden rounded-lg bg-palm-deep text-paper">
+      <section aria-label="Receipt" className="mt-6 overflow-hidden rounded-lg border border-line bg-white">
         <div className="flex items-start gap-3 p-5 sm:p-8">
-          <CheckCircle size={36} weight="fill" className="shrink-0 text-gold-soft" aria-hidden="true" />
+          <CheckCircle size={36} weight="fill" className="shrink-0 text-violet" aria-hidden="true" />
           <div>
-            <h1 className="font-display text-4xl tracking-wide uppercase sm:text-5xl">Order sent</h1>
-            <p className="mt-2 max-w-md font-sans text-base leading-7 text-paper/80">
-              Thanks {buyer}. Dera has your order and confirms by WhatsApp, usually within 2 hours.
+            <h1 className="font-display text-4xl tracking-wide text-ink uppercase sm:text-5xl">Order sent</h1>
+            <p className="mt-2 max-w-md font-sans text-base leading-7 text-ink/70">
+              Thanks {buyer}. {CONFIRMATION_SLA}
             </p>
-            <p className="mt-3 font-display text-2xl tracking-wide text-gold-soft tabular-nums">
+            <p className="mt-3 font-display text-2xl tracking-wide text-violet-deep tabular-nums">
               {entries.length} {entries.length === 1 ? "piece" : "pieces"} · {formatNgn(total)}
             </p>
           </div>
@@ -64,7 +97,7 @@ function Confirmation() {
             "Same-day delivery in Lagos. Nationwide on request.",
           ].map((step, index) => (
             <li key={step} className="flex items-center gap-3 rounded-md border border-line bg-white p-3 sm:p-4">
-              <Badge color="palm" key={`step-${index}`}>
+              <Badge color="violet" key={`step-${index}`}>
                 {index + 1}
               </Badge>
               <span className="font-sans text-sm text-ink/90 sm:text-base">{step}</span>
@@ -93,7 +126,7 @@ function Confirmation() {
         </div>
       </section>
 
-      <div className="mt-6 flex flex-col gap-2 sm:flex-row">
+      <div className="mt-6 flex flex-col gap-2 sm:flex-row sm:flex-wrap">
         <a
           href={`${DERA_VENDOR.whatsappLink}?text=${encodeURIComponent(whatsappText)}`}
           target="_blank"
@@ -109,6 +142,9 @@ function Confirmation() {
         >
           Keep shopping
         </Link>
+        <ReceiptActions
+          text={`My Jara order: ${entries.length} ${entries.length === 1 ? "piece" : "pieces"}, ${formatNgn(total)}`}
+        />
       </div>
     </>
   );

@@ -14,6 +14,8 @@ export default defineSchema({
     vendorId: v.id("vendors"),
     title: v.string(),
     priceNgn: v.number(),
+    compareAtNgn: v.optional(v.number()),
+    stock: v.optional(v.number()),
     sizes: v.array(v.string()),
     fabric: v.string(),
     occasion: v.string(),
@@ -43,7 +45,16 @@ export default defineSchema({
   })
     .index("by_vendor", ["vendorId"])
     .index("by_listing", ["listingId"])
-    .index("by_group", ["groupId"]),
+    .index("by_group", ["groupId"])
+    .index("by_phone", ["buyerPhone"]),
+  verifications: defineTable({
+    phone: v.string(),
+    email: v.string(),
+    code: v.string(),
+    expiresAt: v.number(),
+    verifiedAt: v.optional(v.number()),
+    attempts: v.number(),
+  }).index("by_phone", ["phone"]),
   inboxEvents: defineTable({
     orderId: v.id("orders"),
     direction: v.string(),

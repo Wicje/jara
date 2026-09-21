@@ -22,10 +22,10 @@ export function ChipGroup({ label, options, current, onSelect }: ChipGroupProps)
               type="button"
               aria-pressed={selected}
               onClick={() => onSelect(option.value)}
-              className={`min-h-11 rounded-full px-4 font-sans text-sm font-semibold transition-all active:scale-[0.97] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold ${
+              className={`min-h-[42px] rounded-[32px] px-4 font-sans text-sm font-semibold transition-all active:scale-[0.97] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet ${
                 selected
-                  ? "bg-palm text-white"
-                  : "bg-white text-ink ring-1 ring-ink/20 ring-inset hover:bg-cream"
+                  ? "bg-ink text-white"
+                  : "bg-white text-ink ring-1 ring-ink/20 ring-inset hover:bg-mist"
               }`}
             >
               {option.label}

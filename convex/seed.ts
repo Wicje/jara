@@ -127,7 +127,7 @@ export const seedDera = mutation({
       .take(1);
     if (current.length > 0) return { vendorId, seeded: 0 };
     for (const item of SEED) {
-      await ctx.db.insert("listings", { vendorId, ...item, status: "active" });
+      await ctx.db.insert("listings", { vendorId, ...item, status: "active", stock: 8 });
     }
     return { vendorId, seeded: SEED.length };
   },
@@ -176,7 +176,7 @@ export const replaceCatalog = mutation({
       .take(200);
     for (const listing of listings) await ctx.db.delete("listings", listing._id);
     for (const item of SEED) {
-      await ctx.db.insert("listings", { vendorId, ...item, status: "active" });
+      await ctx.db.insert("listings", { vendorId, ...item, status: "active", stock: 8 });
     }
     await ctx.db.patch("vendors", vendorId, { whatsapp: "08091003832" });
     return { inserted: SEED.length };

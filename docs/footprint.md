@@ -17,9 +17,9 @@
 - **Env / secrets needed:** OPENAI_API_KEY (BYO, server actions only), FIRECRAWL_API_KEY, AGENTMAIL_API_KEY, CONVEX_URL
 
 ## 2. Current state (update every task — 3 lines max)
-- **Last known good:** 2026-09-21 — frontend cleanup green: lint clean, build, unit 11 pass, e2e 3 pass
-- **Now working on:** Human inputs and submission assets; large frontend restyle remains uncommitted
-- **Blocked / needs human:** Dera's EMAIL address; Dera to confirm sizes/fabrics; commit/push decision
+- **Last known good:** 2026-09-21 — persona fixes green: lint clean, build, unit 15 pass, e2e 3 pass
+- **Now working on:** Human inputs and submission assets; persona batch needs redeploy to convex.site
+- **Blocked / needs human:** Dera's EMAIL address; Dera to confirm sizes/fabrics; AGENTMAIL_INBOX_ID still missing (sends queue without it)
 
 ## 3. Decisions (why, not what — append, never rewrite)
 | Date | Decision | Why |
@@ -112,6 +112,7 @@
 - [ ] Dera to confirm sizes/fabrics (names/prices/photos real from her site)
 - [ ] Full-access AGENTMAIL_API_KEY, then demo video, social post, vibeapps submit
 - [ ] Decide whether to commit/push the large uncommitted frontend restyle and cleanup
+- [ ] Redeploy convex.site so the vendor-styleguide redesign is live (site still shows old UI)
 
 ## 6. Resume prompt (for a fresh agent with no memory)
 > Read `docs/footprint.md`, `docs/brief.md`, `docs/coding-rules.md`, `AGENTS.md`.
@@ -140,3 +141,18 @@
 - Reason: make storefront bolder while removing dead/duplicated frontend code
 - Checks: lint clean, build pass, unit 11 pass, e2e 3 pass
 - Notes: large frontend restyle remains uncommitted; hydration warning observed in dev browser log but no console-error test failure
+## 2026-09-21 — Redesign from vendor styleguide (designmd.supply)
+- Changed: styleguide+brand API for styleinlagos.ng → violet/blush/ink tokens, Roboto Condensed + Open Sans, 32px pills, flat 8px cards, light hero/store/receipt
+- Reason: UI needed a real identity; vendor's own design language instead of invented theme
+- Checks: lint clean, build pass, unit 11 pass, e2e 3 pass, baseline regenerated
+- Notes: 8-persona critique delivered; fixes not yet built; redesign not yet redeployed
+## 2026-09-21 — Persona fixes (all but billionaire)
+- Changed: OTP verify flow, rate limits, bot traps, flagged orders, stock/sale fields, wishlist, buy-again, share buttons, budget shelf, gram strip, delivery fees, vendor PIN orders + alerts
+- Reason: 8-persona critique (heavy/one-time/introvert/creep/extrovert/thrifty/entrepreneur)
+- Checks: lint clean, build pass, unit 15 pass, e2e 3 pass
+- Notes: e2e hardened for cold servers (single click + long waits, no networkidle — Convex socket never idles); OTP email needs AGENTMAIL keys; needs redeploy
+## 2026-09-21 — Secrets activated (values never committed)
+- Changed: VENDOR_PIN + AGENTMAIL_API_KEY set on dev and prod env; backend pushed to dev; PIN gate verified true/false live
+- Reason: activate vendor orders view + real sends/OTP delivery
+- Checks: checkPin true on correct PIN, false on wrong PIN
+- Notes: AGENTMAIL_INBOX_ID still missing so sends still queue; prod code deploy still pending
