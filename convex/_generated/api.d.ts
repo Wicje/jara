@@ -8,12 +8,14 @@
  * @module
  */
 
+import type * as agent from "../agent.js";
 import type * as email from "../email.js";
 import type * as http from "../http.js";
 import type * as importer from "../importer.js";
 import type * as inbox from "../inbox.js";
 import type * as listings from "../listings.js";
 import type * as orders from "../orders.js";
+import type * as reviews from "../reviews.js";
 import type * as seed from "../seed.js";
 import type * as stats from "../stats.js";
 import type * as threads from "../threads.js";
@@ -27,12 +29,14 @@ import type {
 } from "convex/server";
 
 declare const fullApi: ApiFromModules<{
+  agent: typeof agent;
   email: typeof email;
   http: typeof http;
   importer: typeof importer;
   inbox: typeof inbox;
   listings: typeof listings;
   orders: typeof orders;
+  reviews: typeof reviews;
   seed: typeof seed;
   stats: typeof stats;
   threads: typeof threads;

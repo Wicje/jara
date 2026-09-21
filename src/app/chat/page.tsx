@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { Suspense, useCallback, useEffect, useRef, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useMutation, useQuery } from "convex/react";
+import { useAction, useMutation, useQuery } from "convex/react";
 import { api } from "../../../convex/_generated/api";
 import type { Id } from "../../../convex/_generated/dataModel";
 import { isConvexConfigured } from "../providers";
@@ -57,6 +57,7 @@ function Chat() {
   const [sending, setSending] = useState(false);
   const startedRef = useRef(false);
   const live = useQuery(api.listings.list, {});
+  const agent = useQuery(api.agent.status, {});
   const savedThread = useQuery(
     api.threads.getThread,
     threadId ? { threadId: threadId as Id<"threads"> } : "skip",
@@ -64,6 +65,7 @@ function Chat() {
   const createThread = useMutation(api.threads.createThread);
   const appendMessage = useMutation(api.threads.appendMessage);
   const saveRecommendations = useMutation(api.threads.saveRecommendations);
+  const agentReply = useAction(api.agent.reply);
 
   const sendMessage = useCallback(
     async (text: string, tool: ChatToolId, listings: ReturnType<typeof toBrainListings>) => {
@@ -72,6 +74,42 @@ function Chat() {
         id = await createThread({ query: text });
         setThreadId(id);
         router.replace(`/chat?id=${id}`);
+      }
+      // The LLM agent persists its own messages. Without a model key the
+      // deterministic brain answers and this client persists the thread.
+      if (agent?.configured) {
+        try {
+          const res = await agentReply({ threadId: id as Id<"threads">, text });
+          if (res.mode === "ai") {
+            const items = listings.filter((l) => res.recommendedIds.includes(l._id));
+            setMessages((current) => [
+              ...current,
+              { id: `u-${Date.now()}`, role: "user", text },
+              {
+                id: `a-${Date.now()}`,
+                role: "assistant",
+                text: res.text,
+                items: items.map((l) => ({
+                  id: l._id,
+                  title: l.title,
+                  priceNgn: l.priceNgn,
+                  compareAtNgn: l.compareAtNgn,
+                  stock: l.stock,
+                  occasion: l.occasion,
+                  photoUrl: l.photoUrl,
+                })),
+                chips: [],
+                actions:
+                  items.length > 0
+                    ? [{ label: `View all in catalog`, href: "/catalog" }]
+                    : [],
+              },
+            ]);
+            return;
+          }
+        } catch {
+          // Fall through to the deterministic brain below.
+        }
       }
       const userMsg: ChatMessage = { id: `u-${Date.now()}`, role: "user", text };
       setMessages((current) => [...current, userMsg]);
@@ -98,7 +136,7 @@ function Chat() {
         });
       }
     },
-    [threadId, createThread, appendMessage, saveRecommendations, router],
+    [threadId, createThread, appendMessage, saveRecommendations, agentReply, agent, router],
   );
 
   // Seed history once, then auto-send an incoming ?q= exactly once.
@@ -221,7 +259,10 @@ function Chat() {
           </p>
         )}
       </div>
-      <div className="sticky bottom-4 mt-4">
+      <div className="sticky bottom-4 mt-4 grid gap-1.5">
+        <p className="font-sans text-xs text-smoke" role="status">
+          {agent?.configured ? "AI concierge is on — I reason over the live catalog." : "Quick matcher is on — connect a model key for the full AI concierge."}
+        </p>
         <AiComposer
           autoFocus
           placeholder="Owambe dress under 100k, size M"

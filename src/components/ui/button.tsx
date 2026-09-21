@@ -4,7 +4,7 @@
 // flat surfaces, violet accent on white.
 import { forwardRef, type ButtonHTMLAttributes, type ReactNode } from "react";
 
-type Variant = "primary" | "secondary" | "outline" | "ghost" | "danger" | "accent";
+type Variant = "primary" | "secondary" | "outline" | "ghost" | "danger" | "accent" | "black";
 type Size = "sm" | "md" | "lg";
 
 const base =
@@ -17,6 +17,7 @@ const variants: Record<Variant, string> = {
   ghost: "text-ink hover:bg-mist",
   danger: "bg-red-800 text-white hover:bg-red-900",
   accent: "bg-violet text-white hover:bg-violet-deep",
+  black: "bg-black text-white hover:bg-neutral-900",
 };
 
 const sizes: Record<Size, string> = {

@@ -16,7 +16,7 @@ test("homepage matches baseline visual", async ({ page }) => {
       page.getByRole("list", { name: "Products" }),
       page.getByRole("list", { name: "Budget picks" }),
       page.getByRole("list", { name: "Past orders" }),
-      page.getByLabel("Hero backdrop photo"),
+      page.getByLabel("Banner photo"),
     ],
   });
 });

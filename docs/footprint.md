@@ -17,8 +17,8 @@
 - **Env / secrets needed:** OPENAI_API_KEY (BYO, server actions only), FIRECRAWL_API_KEY, AGENTMAIL_API_KEY, CONVEX_URL
 
 ## 2. Current state (update every task — 3 lines max)
-- **Last known good:** 2026-09-21 — hero/chat/vendor-table batch green: lint, build, unit 29, e2e 4
-- **Now working on:** Phase 0 LLM agent (needs OpenAI key); submission assets
+- **Last known good:** 2026-09-21 — LLM agent channel built, deterministic fallback green: lint, build, unit 33, e2e 4
+- **Now working on:** Submission assets (demo video, social post, vibeapps)
 - **Blocked / needs human:** Dera's EMAIL address; Dera to confirm sizes/fabrics; AGENTMAIL_INBOX_ID still missing (sends queue without it)
 
 ## 3. Decisions (why, not what — append, never rewrite)
@@ -171,3 +171,13 @@
 - Reason: integrate Finlayer/composer/table patterns for hero, chat, vendor flows
 - Checks: lint clean, build pass, unit 29 pass, e2e 4 pass
 - Notes: no framer/lucide/cn deps; LLM agent still needs OPENAI_API_KEY; uncommitted
+## 2026-09-21 — Reference-look homepage + PDP
+- Changed: MADNESS homepage (banner, giant JARA, editorial grid, tiles, red CTA); Nextgen PDP (gallery, countdown, accordions, shipping); real reviews table + UI; related pieces; black button variant; crimson/cloud/star tokens
+- Reason: pixel-faithful build from hero.jpg + product-page reference, Jara content only
+- Checks: lint clean, build pass, unit 36 pass, e2e 4 pass, baseline regenerated
+- Notes: reviews are real (empty until shoppers write); thumbs share the single vendor photo; mobile tiles match reference rhythm; uncommitted
+## 2026-09-21 — LLM concierge channel (key-gated)
+- Changed: agent-protocol lib + tests; agent.reply action with 3-tool loop + status query; chat prefers LLM, falls back honestly with on-screen indicator
+- Reason: Phase 0 agentic commerce — model reasons over tools, guardrails in system prompt
+- Checks: lint clean, build pass, unit 33 pass, e2e 4 pass (deterministic path; LLM path needs key)
+- Notes: send OPENAI_API_KEY to verify the live loop; uncommitted

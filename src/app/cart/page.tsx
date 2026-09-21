@@ -73,7 +73,7 @@ export default function CartPage() {
               <p className="font-display text-2xl tracking-wide tabular-nums">
                 Total {formatNgn(totalNgn)}
               </p>
-              <Button size="lg" variant="accent" className="w-full sm:w-auto" onClick={() => router.push("/checkout")}>
+              <Button size="lg" variant="black" className="w-full sm:w-auto" onClick={() => router.push("/checkout")}>
                 Checkout
               </Button>
             </div>

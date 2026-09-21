@@ -71,4 +71,10 @@ export default defineSchema({
     body: v.string(),
     status: v.optional(v.string()),
   }).index("by_order", ["orderId"]),
+  reviews: defineTable({
+    listingId: v.id("listings"),
+    name: v.string(),
+    rating: v.number(),
+    text: v.string(),
+  }).index("by_listing", ["listingId"]),
 });

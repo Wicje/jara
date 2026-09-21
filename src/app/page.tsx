@@ -4,21 +4,17 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { ArrowRight, InstagramLogo, MagnifyingGlass } from "@phosphor-icons/react";
+import { ArrowRight, MagnifyingGlass } from "@phosphor-icons/react";
 import { useQuery } from "convex/react";
 import { api } from "../../convex/_generated/api";
 import { DERA_LISTINGS, DERA_VENDOR } from "@/data/dera";
-import { getReceipts } from "@/lib/shopper";
 import { isConvexConfigured } from "./providers";
 import { Button } from "@/components/ui/button";
 import { Container } from "@/components/ui/container";
 import { Input } from "@/components/ui/input";
 import { Text } from "@/components/ui/text";
-import { ProductCard, ProductCardSkeleton } from "@/components/product-card";
-import type { ProductCardItem } from "@/components/product-card";
-import { HeroArt } from "@/components/concierge-hero";
-
-const OCCASIONS = ["owambe", "church", "street"] as const;
+import { ProductCardSkeleton, type ProductCardItem } from "@/components/product-card";
+import { formatNgn } from "@/components/format";
 
 function toCardItem(l: {
   _id: string;
@@ -40,117 +36,30 @@ function toCardItem(l: {
   };
 }
 
-function BuyAgain() {
-  const [receipts] = useState(getReceipts);
-  const latest = receipts[0];
-  if (!latest || latest.items.length === 0) return null;
-  return (
-    <section aria-label="Buy again" className="mt-12">
-      <div className="flex items-baseline justify-between">
-        <h2 className="font-display text-3xl tracking-wide text-ink uppercase sm:text-4xl">Buy again</h2>
-        <Link href="/catalog" className="font-sans text-sm font-semibold text-violet-deep underline">
-          Browse all
-        </Link>
-      </div>
-      <ul className="mt-4 grid grid-cols-2 gap-x-3 gap-y-6 sm:gap-x-4 lg:grid-cols-3" aria-label="Past orders">
-        {latest.items.slice(0, 3).map((item) => (
-          <ProductCard
-            key={`${item.listingId}-${item.size}`}
-            item={{
-              id: item.listingId,
-              title: item.title,
-              priceNgn: item.priceNgn,
-              occasion: "",
-              photoUrl: item.photoUrl,
-            }}
-          />
-        ))}
-      </ul>
-    </section>
-  );
-}
-
-function GramStrip() {
-  const tiles = DERA_LISTINGS.slice(0, 3);
-  return (
-    <section aria-label="Shop the gram" className="mt-12 overflow-hidden rounded-lg bg-ink text-white">
-      <div className="flex flex-col gap-5 p-6 sm:p-10 lg:flex-row lg:items-center">
-        <div className="flex-1">
-          <p className="font-sans text-xs font-bold tracking-[0.2em] text-blush uppercase">Shop the gram</p>
-          <h2 className="mt-2 font-display text-3xl tracking-wide uppercase sm:text-4xl">
-            As worn on Instagram
-          </h2>
-          <p className="mt-3 max-w-md font-sans text-base leading-7 text-white/80">
-            Follow {DERA_VENDOR.name} for daily drops, then order the look here in one tap.
-          </p>
-          <a
-            href={DERA_VENDOR.instagramUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="mt-5 inline-flex min-h-[42px] items-center gap-2 rounded-[32px] bg-white px-5 font-sans text-sm font-semibold text-ink transition-all hover:bg-blush-soft active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blush"
-          >
-            <InstagramLogo size={16} aria-hidden="true" />
-            Follow on Instagram
-          </a>
-        </div>
-        <div className="grid flex-1 grid-cols-3 gap-2 sm:gap-3" aria-hidden="true">
-          {tiles.map((tile) => (
-            <div key={tile.id} className="overflow-hidden rounded-lg">
-              <Image
-                src={tile.photoUrl}
-                alt=""
-                width={400}
-                height={533}
-                sizes="(max-width: 1024px) 30vw, 20vw"
-                className="aspect-[3/4] w-full object-cover"
-                loading="lazy"
-              />
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-function Hero({ photos }: { photos: string[] }) {
+function AskStrip() {
   const router = useRouter();
   const [query, setQuery] = useState("");
 
   function askJara() {
     const text = query.trim();
-    if (text === "") {
-      router.push("/chat");
-    } else {
-      router.push(`/chat?q=${encodeURIComponent(text)}`);
-    }
+    router.push(text === "" ? "/chat" : `/chat?q=${encodeURIComponent(text)}`);
   }
 
   return (
-    <section aria-label="Find your fit" className="relative overflow-hidden rounded-lg border border-line bg-white">
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-0 bg-[radial-gradient(34rem_24rem_at_88%_8%,rgba(244,190,198,0.45),transparent_62%),radial-gradient(30rem_26rem_at_8%_92%,rgba(114,14,236,0.08),transparent_68%)]"
-      />
-      <div className="relative grid gap-6 p-6 sm:p-10 lg:grid-cols-2 lg:items-center">
-        <div>
-          <p className="font-sans text-xs font-bold tracking-[0.2em] text-violet uppercase">
-            Lagos · Same-day delivery
+    <section aria-label="Ask Jara" className="border-b border-line bg-cloud">
+      <Container className="py-4">
+        <form
+          className="flex flex-col gap-2 sm:flex-row sm:items-center"
+          aria-label="Ask Jara"
+          onSubmit={(e) => {
+            e.preventDefault();
+            askJara();
+          }}
+        >
+          <p className="shrink-0 font-sans text-sm font-semibold text-ink">
+            Describe your look. Jara finds it.
           </p>
-          <h1 className="mt-3 font-display text-5xl leading-[0.95] tracking-wide uppercase sm:text-7xl">
-            Dress like the <span className="text-violet">party</span> is yours
-          </h1>
-          <p className="mt-4 max-w-md font-sans text-base leading-7 text-ink/80">
-            Jara means extra value. Describe the occasion and budget. Real pieces from {DERA_VENDOR.name}.
-          </p>
-          <form
-            className="mt-6 flex max-w-md flex-col gap-2 sm:flex-row"
-            aria-label="Ask Jara"
-            onSubmit={(e) => {
-              e.preventDefault();
-              askJara();
-            }}
-          >
+          <div className="flex flex-1 flex-col gap-2 sm:flex-row">
             <Input
               id="jara-query"
               name="jara-query"
@@ -159,56 +68,201 @@ function Hero({ photos }: { photos: string[] }) {
               onChange={(e) => setQuery(e.target.value)}
               placeholder="Owambe dress under 100k, size M"
               aria-label="Describe what you're looking for"
+              className="border-transparent"
             />
-            <Button type="submit" size="lg" variant="primary" className="shrink-0">
+            <Button type="submit" variant="black" className="shrink-0">
               <MagnifyingGlass size={18} weight="bold" aria-hidden="true" />
               Ask Jara
             </Button>
-          </form>
+          </div>
+        </form>
+      </Container>
+    </section>
+  );
+}
+
+function Banner({ photos }: { photos: string[] }) {
+  const [left, right] = photos;
+  return (
+    <section aria-label="New collection" className="relative left-1/2 w-screen -translate-x-1/2 overflow-hidden bg-ink">
+      <div className="grid sm:grid-cols-2">
+        <div aria-label="Banner photo" className="relative min-h-[320px] sm:min-h-[420px] lg:min-h-[520px]">
+          {left && (
+            <Image
+              src={left}
+              alt="New collection look"
+              fill
+              sizes="(max-width: 640px) 100vw, 50vw"
+              className="object-cover"
+              priority
+            />
+          )}
         </div>
-        <HeroArt photos={photos} />
+        <div aria-label="Banner photo" className="relative min-h-[320px] sm:min-h-[420px] lg:min-h-[520px]">
+          {right && (
+            <Image
+              src={right}
+              alt="New collection detail"
+              fill
+              sizes="(max-width: 640px) 100vw, 50vw"
+              className="object-cover"
+              priority
+            />
+          )}
+          <div className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-4 p-4 sm:p-8">
+            <p className="max-w-[12ch] font-sans text-2xl leading-tight font-bold text-white drop-shadow-[0_2px_12px_rgba(0,0,0,0.6)] sm:text-4xl">
+              Be Brighter, Bolder, Louder!
+            </p>
+            <Link
+              href="/catalog"
+              className="inline-flex min-h-[42px] shrink-0 items-center bg-white px-5 font-sans text-sm font-semibold text-ink transition-all hover:bg-blush-soft active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
+            >
+              Shop All
+            </Link>
+          </div>
+        </div>
       </div>
     </section>
   );
 }
 
-function OccasionRows({ photos, counts }: { photos: Record<string, string>; counts: Record<string, number> }) {
+function GiantWord() {
   return (
-    <section aria-label="Shop by occasion" className="mt-12">
-      <h2 className="font-display text-3xl tracking-wide text-ink uppercase sm:text-4xl">Shop the occasion</h2>
-      <ul className="mt-4 divide-y divide-line border-y border-line">
-        {OCCASIONS.map((occasion, index) => (
-          <li key={occasion}>
-            <Link
-              href={`/catalog?occasion=${occasion}`}
-              className="group flex items-center gap-4 py-3 transition-colors hover:bg-mist focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet"
-            >
-              <span aria-hidden="true" className="w-8 shrink-0 font-display text-sm tracking-wide text-smoke tabular-nums">
-                {String(index + 1).padStart(2, "0")}
-              </span>
-              {photos[occasion] && (
-                <Image
-                  src={photos[occasion]}
-                  alt=""
-                  width={160}
-                  height={160}
-                  className="h-14 w-14 shrink-0 rounded-md object-cover sm:h-16 sm:w-16"
-                  loading="lazy"
-                />
-              )}
-              <span className="flex-1">
-                <span className="block font-display text-2xl tracking-wide text-ink uppercase group-hover:underline sm:text-3xl">
-                  {occasion}
-                </span>
-                <span className="font-sans text-sm text-smoke">
-                  {counts[occasion] ?? 0} pieces in stock
-                </span>
-              </span>
-              <ArrowRight size={22} weight="bold" aria-hidden="true" className="shrink-0 text-violet transition-transform group-hover:translate-x-1" />
-            </Link>
-          </li>
+    <section aria-label="Jara" className="overflow-hidden border-b border-crimson">
+      <h1 className="font-display text-[clamp(4.5rem,19vw,17rem)] leading-[0.9] tracking-tight whitespace-nowrap text-crimson uppercase text-center">
+        Jara
+      </h1>
+      <div className="border-t border-crimson">
+        <Container className="flex items-center justify-between py-2">
+          <span className="font-sans text-xs font-semibold tracking-[0.14em] text-ink/70 uppercase">
+            New Collection
+          </span>
+          <Link
+            href="/catalog"
+            className="inline-flex items-center gap-1 font-sans text-xs font-semibold tracking-[0.14em] text-ink uppercase hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet"
+          >
+            Shop
+            <ArrowRight size={13} weight="bold" aria-hidden="true" />
+          </Link>
+        </Container>
+      </div>
+    </section>
+  );
+}
+
+function EditorialCard({ item, large = false }: { item: ProductCardItem; large?: boolean }) {
+  return (
+    <Link
+      href={`/product?id=${item.id}`}
+      aria-label={item.title}
+      className="group block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet"
+    >
+      <div className={`overflow-hidden bg-cloud ${large ? "aspect-[3/4]" : "aspect-[3/4]"}`}>
+        <Image
+          src={item.photoUrl}
+          alt=""
+          width={large ? 800 : 600}
+          height={large ? 1067 : 800}
+          sizes={large ? "(max-width: 1024px) 100vw, 40vw" : "(max-width: 640px) 50vw, 25vw"}
+          className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-[1.03]"
+          loading="lazy"
+        />
+      </div>
+      <p className="mt-2 truncate font-sans text-sm font-semibold text-ink">{item.title}</p>
+      <p className="font-sans text-sm text-smoke tabular-nums">{formatNgn(item.priceNgn)}</p>
+    </Link>
+  );
+}
+
+function EditorialGrid({ items }: { items: ProductCardItem[] }) {
+  const [lead, ...rest] = items;
+  if (!lead) return null;
+  return (
+    <Container className="pt-8 sm:pt-12">
+      <div className="grid grid-cols-2 gap-x-3 gap-y-8 sm:gap-x-4 lg:grid-cols-3">
+        <div className="col-span-2 lg:col-span-1 lg:row-span-2">
+          <EditorialCard item={lead} large />
+        </div>
+        {rest.slice(0, 4).map((item) => (
+          <EditorialCard key={item.id} item={item} />
         ))}
-      </ul>
+      </div>
+    </Container>
+  );
+}
+
+interface Tile {
+  label: string;
+  href: string;
+  photo?: string;
+  tone: "light" | "photo";
+}
+
+function Tiles({ tiles }: { tiles: Tile[] }) {
+  return (
+    <section aria-label="Shop by collection" className="mt-10 sm:mt-14">
+      <div className="grid sm:grid-cols-2 lg:grid-cols-3">
+        {tiles.map((tile) => (
+          <Link
+            key={tile.label}
+            href={tile.href}
+            className={`group relative flex aspect-square flex-col items-center justify-center gap-2 overflow-hidden focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet focus-visible:ring-inset ${
+              tile.tone === "light" ? "bg-cloud" : "bg-ink"
+            }`}
+          >
+            {tile.tone === "photo" && tile.photo && (
+              <Image
+                src={tile.photo}
+                alt=""
+                fill
+                sizes="(max-width: 640px) 100vw, 33vw"
+                className="object-cover transition-transform duration-300 group-hover:scale-[1.03]"
+                loading="lazy"
+              />
+            )}
+            <span
+              className={`font-display text-3xl tracking-wide uppercase sm:text-4xl ${
+                tile.tone === "light" ? "text-crimson" : "text-white drop-shadow-[0_2px_12px_rgba(0,0,0,0.6)]"
+              }`}
+            >
+              {tile.label}
+            </span>
+            <span
+              className={`font-sans text-xs font-medium ${
+                tile.tone === "light" ? "text-ink/60" : "text-white/80"
+              }`}
+            >
+              Discover More
+            </span>
+          </Link>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+function BottomCta() {
+  return (
+    <section aria-label="Start shopping" className="relative left-1/2 w-screen -translate-x-1/2 overflow-hidden bg-crimson">
+      <Container className="flex flex-col gap-4 py-10 sm:flex-row sm:items-center sm:justify-between sm:py-14">
+        <p className="max-w-xl font-display text-3xl leading-tight tracking-wide text-white uppercase sm:text-4xl">
+          Conquer the streets in style — start your shopping now!
+        </p>
+        <div className="flex shrink-0 flex-col gap-2 sm:flex-row">
+          <Link
+            href="/catalog"
+            className="inline-flex min-h-[42px] items-center justify-center bg-white px-6 font-sans text-sm font-semibold text-ink transition-all hover:bg-blush-soft active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
+          >
+            Start shopping
+          </Link>
+          <Link
+            href="/chat"
+            className="inline-flex min-h-[42px] items-center justify-center px-6 font-sans text-sm font-semibold text-white ring-1 ring-white/50 ring-inset transition-all hover:bg-white/10 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
+          >
+            Chat concierge
+          </Link>
+        </div>
+      </Container>
     </section>
   );
 }
@@ -216,87 +270,79 @@ function OccasionRows({ photos, counts }: { photos: Record<string, string>; coun
 function Landing() {
   const live = useQuery(api.listings.list, {});
   const listings = live ?? [];
-  const photos: Record<string, string> = {};
-  const counts: Record<string, number> = {};
-  const heroPhotos: string[] = [];
-  for (const listing of listings) {
-    counts[listing.occasion] = (counts[listing.occasion] ?? 0) + 1;
-    if (!photos[listing.occasion]) photos[listing.occasion] = listing.photoUrl;
-    if (heroPhotos.length < 3) heroPhotos.push(listing.photoUrl);
-  }
-  const fresh = listings.slice(0, 6).map(toCardItem);
-  const budget = listings.filter((l) => l.priceNgn <= 50000).slice(0, 6).map(toCardItem);
+  const bannerPhotos = listings.slice(0, 2).map((l) => l.photoUrl);
+  const gridItems = listings.slice(0, 5).map(toCardItem);
+  const photoFor = (occasion: string) => listings.find((l) => l.occasion === occasion)?.photoUrl;
+  const tiles: Tile[] = [
+    { label: "New arrivals", href: "/catalog", tone: "light" },
+    { label: "Owambe", href: "/catalog?occasion=owambe", photo: photoFor("owambe"), tone: "photo" },
+    { label: "Church", href: "/catalog?occasion=church", tone: "light" },
+    { label: "Street", href: "/catalog?occasion=street", photo: photoFor("street"), tone: "photo" },
+    { label: "Under ₦50k", href: "/catalog?budget=50000", tone: "light" },
+    { label: "Dera's store", href: "/store", photo: "/dera/dera-01.jpg", tone: "photo" },
+  ];
 
   return (
     <>
-      <Hero photos={heroPhotos} />
-      <OccasionRows photos={photos} counts={counts} />
-      <BuyAgain />
-      <section aria-label="New this week" className="mt-12">
-        <div className="flex items-baseline justify-between">
-          <h2 className="font-display text-3xl tracking-wide text-ink uppercase sm:text-4xl">New this week</h2>
-          <Link href="/catalog" className="font-sans text-sm font-semibold text-violet-deep underline">
-            Browse all
-          </Link>
-        </div>
-        {live === undefined ? (
-          <div className="mt-4 grid grid-cols-2 gap-x-3 gap-y-6 sm:gap-x-4 lg:grid-cols-3" aria-label="Loading new arrivals" aria-busy="true">
+      <Banner photos={bannerPhotos} />
+      <AskStrip />
+      <GiantWord />
+      {live === undefined ? (
+        <Container className="pt-8">
+          <div className="grid grid-cols-2 gap-x-3 gap-y-6 sm:gap-x-4 lg:grid-cols-3" aria-label="Loading new arrivals" aria-busy="true">
             {[0, 1, 2, 3, 4, 5].map((skeleton) => (
               <ProductCardSkeleton key={skeleton} />
             ))}
           </div>
-        ) : (
-          <ul className="mt-4 grid grid-cols-2 gap-x-3 gap-y-6 sm:gap-x-4 lg:grid-cols-3" aria-label="Products">
-            {fresh.map((item) => (
-              <ProductCard key={item.id} item={item} />
-            ))}
-          </ul>
-        )}
-      </section>
-      {budget.length > 0 && (
-        <section aria-label="Under 50k" className="mt-12">
-          <div className="flex items-baseline justify-between">
-            <h2 className="font-display text-3xl tracking-wide text-ink uppercase sm:text-4xl">Under ₦50k</h2>
-            <Link href="/catalog?budget=50000" className="font-sans text-sm font-semibold text-violet-deep underline">
-              All budget picks
-            </Link>
-          </div>
-          <ul className="mt-4 grid grid-cols-2 gap-x-3 gap-y-6 sm:gap-x-4 lg:grid-cols-3" aria-label="Budget picks">
-            {budget.map((item) => (
-              <ProductCard key={item.id} item={item} />
-            ))}
-          </ul>
-        </section>
+        </Container>
+      ) : (
+        <EditorialGrid items={gridItems} />
       )}
-      <GramStrip />
+      <Tiles tiles={tiles} />
+      <div className="mt-10 sm:mt-14">
+        <BottomCta />
+      </div>
     </>
   );
 }
 
 function StaticLanding() {
+  const bannerPhotos = DERA_LISTINGS.slice(0, 2).map((l) => l.photoUrl);
+  const gridItems = DERA_LISTINGS.slice(0, 5).map((l) => ({
+    id: l.id,
+    title: l.title,
+    priceNgn: l.priceNgn,
+    occasion: l.occasion,
+    photoUrl: l.photoUrl,
+  }));
+  const photoFor = (occasion: string) => DERA_LISTINGS.find((l) => l.occasion === occasion)?.photoUrl;
+  const tiles: Tile[] = [
+    { label: "New arrivals", href: "/catalog", tone: "light" },
+    { label: "Owambe", href: "/catalog?occasion=owambe", photo: photoFor("owambe"), tone: "photo" },
+    { label: "Church", href: "/catalog?occasion=church", tone: "light" },
+    { label: "Street", href: "/catalog?occasion=street", photo: photoFor("street"), tone: "photo" },
+    { label: "Under ₦50k", href: "/catalog?budget=50000", tone: "light" },
+    { label: "Dera's store", href: "/store", photo: "/dera/dera-01.jpg", tone: "photo" },
+  ];
   return (
     <>
-      <Hero photos={DERA_LISTINGS.slice(0, 3).map((l) => l.photoUrl)} />
-      <section aria-label="New this week" className="mt-12">
-        <h2 className="font-display text-3xl tracking-wide text-ink uppercase sm:text-4xl">New this week</h2>
-        <ul className="mt-4 grid grid-cols-2 gap-x-3 gap-y-6 sm:gap-x-4 lg:grid-cols-3" aria-label="Products">
-          {DERA_LISTINGS.slice(0, 6).map((l) => (
-            <ProductCard
-              key={l.id}
-              item={{ id: l.id, title: l.title, priceNgn: l.priceNgn, occasion: l.occasion, photoUrl: l.photoUrl }}
-            />
-          ))}
-        </ul>
-      </section>
+      <Banner photos={bannerPhotos} />
+      <AskStrip />
+      <GiantWord />
+      <EditorialGrid items={gridItems} />
+      <Tiles tiles={tiles} />
+      <div className="mt-10 sm:mt-14">
+        <BottomCta />
+      </div>
     </>
   );
 }
 
 export default function Home() {
   return (
-    <main>
-      <Container className="pt-4 pb-4 sm:pt-6">
-        {isConvexConfigured() ? <Landing /> : <StaticLanding />}
+    <main className="overflow-x-clip">
+      {isConvexConfigured() ? <Landing /> : <StaticLanding />}
+      <Container className="pb-4">
         <Text className="mt-10" tone="muted">
           Live catalog from {DERA_VENDOR.name} ({DERA_VENDOR.byline}) via Firecrawl. Sizes and fabrics to be confirmed by vendor.
         </Text>
