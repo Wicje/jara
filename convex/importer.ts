@@ -98,8 +98,8 @@ export const importStore = action({
     const drafts = titles.slice(0, 10).map((title, i) => {
       const photoUrl =
         images[i] ?? images[0] ?? "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=800&q=80";
-      // Gallery: the next few page images after this draft's own photo.
-      const photoUrls = images.filter((u) => u !== photoUrl).slice(i, i + 3);
+      // Gallery: up to four more page images after this draft's own photo.
+      const photoUrls = images.filter((u) => u !== photoUrl).slice(i, i + 4);
       return {
         title,
         priceNgn: money[i] ?? money[0] ?? 0,

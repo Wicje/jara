@@ -7,7 +7,6 @@ import { Heart } from "@phosphor-icons/react";
 import { motion } from "framer-motion";
 import { formatNgn } from "./format";
 import { isWishlisted, toggleWishlist } from "@/lib/shopper";
-import { ShareButton } from "./share-button";
 import { Badge } from "./ui/badge";
 
 export interface ProductCardItem {
@@ -120,10 +119,6 @@ export function ProductCard({ item }: { item: ProductCardItem }) {
             </span>
           )}
         </p>
-        <div className="mt-0.5 flex items-center">
-          <WishlistButton listingId={item.id} title={item.title} />
-          <ShareButton title={item.title} priceNgn={item.priceNgn} listingId={item.id} />
-        </div>
       </div>
     </li>
   );

@@ -245,7 +245,7 @@ function Tiles({ tiles }: { tiles: Tile[] }) {
 
 function BottomCta() {
   return (
-    <section aria-label="Start shopping" className="relative left-1/2 w-screen -translate-x-1/2 overflow-hidden bg-violet-deep">
+    <section aria-label="Start shopping" className="brand-glow relative left-1/2 w-screen -translate-x-1/2 overflow-hidden">
       <Container className="flex flex-col gap-4 py-10 sm:flex-row sm:items-center sm:justify-between sm:py-14">
         <p className="max-w-xl font-display text-3xl leading-tight tracking-wide text-white uppercase sm:text-4xl">
           Conquer the streets in style — start your shopping now!

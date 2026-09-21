@@ -17,7 +17,7 @@
 - **Env / secrets needed:** OPENAI_API_KEY (BYO, server actions only), FIRECRAWL_API_KEY, AGENTMAIL_API_KEY, CONVEX_URL
 
 ## 2. Current state (update every task — 3 lines max)
-- **Last known good:** 2026-09-21 — purple-primary refinement green: lint, build, unit 36, e2e 4
+- **Last known good:** 2026-09-21 — slim nav + brand-glow system green: lint, build, unit 36, e2e 4
 - **Now working on:** Submission assets (demo video, social post, vibeapps)
 - **Blocked / needs human:** Dera's EMAIL address; Dera to confirm sizes/fabrics; AGENTMAIL_INBOX_ID still missing (sends queue without it)
 
@@ -190,4 +190,14 @@
 - Changed: violet glass hover on solid buttons; photoUrls schema + importer galleries; card hover swap; PDP thumbnail gallery; fixed motion.button drag-type clash + chat JSX break
 - Reason: hover button-to-glass; second photo on hover; full gallery on PDP
 - Checks: lint clean, build pass, unit 36 pass, e2e 4 pass
+- Notes: glass/gallery batch committed in dad1086
+## 2026-09-21 — Floating chat launcher
+- Changed: ChatLauncher on every page except /chat (spring entrance, attention ping, clears sticky bars); smoke test covers visibility + navigation
+- Reason: concierge was a destination shoppers could skip — now it is a presence
+- Checks: lint clean, build pass, unit 36 pass, e2e 4 pass, baseline regenerated
+- Notes: uncommitted
+## 2026-09-21 — Slim nav + brand-glow panels
+- Changed: nav reduced to Contact us/Shop/Cart/Menu drawer; shared .brand-glow on footer CTA, store, receipt, cart bar, home CTA
+- Reason: cleaner header; footer gradient loved → signature surface everywhere
+- Checks: lint clean, build pass, unit 36 pass, e2e 4 pass, screenshots verified
 - Notes: uncommitted

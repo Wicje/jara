@@ -13,7 +13,7 @@ export function ChipGroup({ label, options, current, onSelect }: ChipGroupProps)
       <span id={`${label}-label`} className="font-sans text-xs font-bold tracking-[0.14em] text-smoke uppercase">
         {label}
       </span>
-      <div className="flex flex-wrap gap-2" role="group" aria-labelledby={`${label}-label`}>
+      <div className="flex flex-wrap items-center gap-2" role="group" aria-labelledby={`${label}-label`}>
         {options.map((option) => {
           const selected = current.toLowerCase() === option.value.toLowerCase();
           return (
@@ -22,7 +22,7 @@ export function ChipGroup({ label, options, current, onSelect }: ChipGroupProps)
               type="button"
               aria-pressed={selected}
               onClick={() => onSelect(option.value)}
-              className={`min-h-[42px] rounded-[32px] px-4 font-sans text-sm font-semibold transition-all active:scale-[0.97] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet ${
+              className={`min-h-10 rounded-full px-4 font-sans text-sm font-semibold transition-all outline-none hover:-translate-y-px focus-visible:ring-2 focus-visible:ring-violet active:scale-[0.97] ${
                 selected
                   ? "bg-violet text-white shadow-[0_8px_20px_-8px_rgba(114,14,236,0.55)]"
                   : "bg-white text-ink ring-1 ring-ink/20 ring-inset hover:bg-mist"
@@ -45,6 +45,7 @@ export const OCCASION_OPTIONS = [
 ];
 
 export const SIZE_OPTIONS = [
+  { value: "", label: "Any" },
   { value: "S", label: "S" },
   { value: "M", label: "M" },
   { value: "L", label: "L" },

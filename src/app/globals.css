@@ -158,3 +158,12 @@ body {
   background: var(--color-violet);
   color: #ffffff;
 }
+
+/* Signature brand surface: deep violet with blush/violet glow.
+   One source of truth — use for hero panels across every page. */
+.brand-glow {
+  background-color: var(--color-violet-deep);
+  background-image:
+    radial-gradient(30rem 20rem at 90% 10%, rgba(244, 190, 198, 0.22), transparent 62%),
+    radial-gradient(26rem 22rem at 5% 95%, rgba(114, 14, 236, 0.35), transparent 68%);
+}

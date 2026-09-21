@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { EB_Garamond, Montserrat } from "next/font/google";
 import { Providers } from "./providers";
 import { CartProvider } from "@/components/cart-provider";
+import { ChatLauncher } from "@/components/chat-launcher";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import "./globals.css";
@@ -43,6 +44,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
             <SiteHeader />
             <div className="flex-1">{children}</div>
             <SiteFooter />
+            <ChatLauncher />
           </CartProvider>
         </Providers>
       </body>

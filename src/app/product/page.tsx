@@ -420,22 +420,35 @@ function ProductDetail() {
             </p>
           )}
 
-          <div className="mt-6 grid gap-3">
-            <details className="rounded-lg border border-line bg-white px-4 py-3" open>
-              <summary className="cursor-pointer font-sans text-sm font-bold text-ink">
-                Description &amp; Fit
-              </summary>
+          <div className="mt-8 grid gap-6">
+            <section aria-label="Description">
+              <h2 className="font-sans text-base font-bold text-ink">Description</h2>
               <p className="mt-2 font-sans text-sm leading-6 text-ink/70">
                 {currentListing.title} in {currentListing.fabric}, made ready-to-wear for{" "}
-                {currentListing.occasion} occasions. S fits like a UK 8 to 10. M fits 10 to 12. L
-                fits 12 to 14. XL fits 14 to 16. Between sizes? Size up for owambe looks.
+                {currentListing.occasion} occasions. A boutique piece from {vendorName} in Lagos —
+                what you see in the photos is what arrives at your door.
               </p>
-            </details>
-            <details className="rounded-lg border border-line bg-white px-4 py-3">
-              <summary className="cursor-pointer font-sans text-sm font-bold text-ink">
-                Shipping
-              </summary>
-              <ul className="mt-3 grid grid-cols-2 gap-2">
+            </section>
+            <section aria-label="Product details">
+              <h2 className="font-sans text-base font-bold text-ink">Product details</h2>
+              <dl className="mt-2 divide-y divide-line rounded-lg border border-line bg-white">
+                {[
+                  ["Fabric", currentListing.fabric],
+                  ["Occasion", currentListing.occasion],
+                  ["Sizes", currentListing.sizes.join(", ")],
+                  ["Vendor", vendorName],
+                  ["Availability", soldOut ? "Sold out" : lowStock ? `Only ${stock} left` : "In stock"],
+                ].map(([term, value]) => (
+                  <div key={term} className="flex items-baseline justify-between gap-4 px-4 py-2.5">
+                    <dt className="font-sans text-sm text-smoke">{term}</dt>
+                    <dd className="text-right font-sans text-sm font-semibold text-ink capitalize">{value}</dd>
+                  </div>
+                ))}
+              </dl>
+            </section>
+            <section aria-label="Shipping">
+              <h2 className="font-sans text-base font-bold text-ink">Shipping</h2>
+              <ul className="mt-2 grid grid-cols-2 gap-2">
                 {[
                   { Icon: Truck, title: "Same-day Lagos", detail: "Order by 2pm, Mon–Sat" },
                   { Icon: Wallet, title: "Transfer on confirm", detail: "Or pay on pickup" },
@@ -451,6 +464,15 @@ function ProductDetail() {
                   </li>
                 ))}
               </ul>
+            </section>
+            <details className="rounded-lg border border-line bg-white px-4 py-3">
+              <summary className="cursor-pointer font-sans text-sm font-bold text-ink">
+                Size guide
+              </summary>
+              <p className="mt-2 font-sans text-sm leading-6 text-ink/70">
+                S fits like a UK 8 to 10. M fits 10 to 12. L fits 12 to 14. XL fits 14 to 16.
+                Between sizes? Size up for owambe looks.
+              </p>
             </details>
           </div>
         </div>

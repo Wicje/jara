@@ -75,15 +75,15 @@ function Confirmation() {
 
   return (
     <>
-      <section aria-label="Receipt" className="mt-6 overflow-hidden rounded-lg border border-line bg-white">
+      <section aria-label="Receipt" className="brand-glow mt-6 overflow-hidden rounded-lg text-white">
         <div className="flex items-start gap-3 p-5 sm:p-8">
-          <CheckCircle size={36} weight="fill" className="shrink-0 text-violet" aria-hidden="true" />
+          <CheckCircle size={36} weight="fill" className="shrink-0 text-blush" aria-hidden="true" />
           <div>
-            <h1 className="font-display text-4xl tracking-wide text-ink uppercase sm:text-5xl">Order sent</h1>
-            <p className="mt-2 max-w-md font-sans text-base leading-7 text-ink/70">
+            <h1 className="font-display text-4xl tracking-wide uppercase sm:text-5xl">Order sent</h1>
+            <p className="mt-2 max-w-md font-sans text-base leading-7 text-white/80">
               Thanks {buyer}. {CONFIRMATION_SLA}
             </p>
-            <p className="mt-3 font-display text-2xl tracking-wide text-violet-deep tabular-nums">
+            <p className="mt-3 font-display text-2xl tracking-wide tabular-nums">
               {entries.length} {entries.length === 1 ? "piece" : "pieces"} · {formatNgn(total)}
             </p>
           </div>

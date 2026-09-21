@@ -60,34 +60,63 @@ function Catalog() {
         ? `1 ${occasionLabel} piece in stock`
         : `${items.length} ${occasionLabel} pieces in stock`;
 
+  const hasFilters = occasion !== "" || budget !== "" || size !== "" || sort !== "newest";
+
+  function resetAll() {
+    setOccasion("");
+    setBudget("");
+    setSize("");
+    setSort("newest");
+  }
+
   return (
     <>
-      <div className="mt-6 rounded-lg bg-mist p-4 sm:p-5">
-        <div className="grid gap-4">
+      <div className="mt-6 rounded-2xl border border-line bg-white p-4 shadow-[0_16px_40px_-24px_rgba(51,51,51,0.25)] sm:p-5">
+        <div className="flex items-center justify-between gap-3">
+          <p className="font-sans text-xs font-bold tracking-[0.14em] text-smoke uppercase">
+            Filters
+          </p>
+          <div className="flex items-center gap-3">
+            <p className="font-sans text-sm font-semibold text-ink/70 tabular-nums" role="status">
+              {countText}
+            </p>
+            {hasFilters && (
+              <button
+                type="button"
+                onClick={resetAll}
+                className="rounded-full px-3 py-1.5 font-sans text-xs font-bold text-violet-deep transition-colors hover:bg-blush-soft focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet"
+              >
+                Reset
+              </button>
+            )}
+          </div>
+        </div>
+        <div className="mt-4 grid gap-4">
           <ChipGroup label="Occasion" options={OCCASION_OPTIONS} current={occasion} onSelect={setOccasion} />
-          <div className="grid gap-4 sm:grid-cols-3">
+          <div className="grid items-start gap-4 sm:grid-cols-[minmax(0,1fr)_minmax(0,1.2fr)_minmax(0,0.8fr)]">
             <ChipGroup label="Size" options={SIZE_OPTIONS} current={size} onSelect={setSize} />
             <ChipGroup label="Budget" options={BUDGET_OPTIONS} current={budget} onSelect={setBudget} />
             <div className="grid content-start gap-1.5">
               <Label htmlFor="sort">Sort</Label>
-              <select
-                id="sort"
-                value={sort}
-                onChange={(e) => setSort(e.target.value as Sort)}
-                className="h-11 rounded-md border border-ink/20 bg-white px-3 font-sans text-sm text-ink focus:border-violet focus:outline-none focus:ring-2 focus:ring-violet/40"
-              >
-                <option value="newest">Newest</option>
-                <option value="price-asc">Price low to high</option>
-                <option value="price-desc">Price high to low</option>
-              </select>
+              <div className="relative">
+                <select
+                  id="sort"
+                  value={sort}
+                  onChange={(e) => setSort(e.target.value as Sort)}
+                  className="h-10 w-full appearance-none rounded-full border border-ink/20 bg-white pr-9 pl-4 font-sans text-sm font-semibold text-ink transition-colors outline-none hover:border-ink/40 focus:border-violet focus:ring-2 focus:ring-violet/40"
+                >
+                  <option value="newest">Newest</option>
+                  <option value="price-asc">Price low to high</option>
+                  <option value="price-desc">Price high to low</option>
+                </select>
+                <span aria-hidden="true" className="pointer-events-none absolute top-1/2 right-3.5 -translate-y-1/2 font-sans text-xs text-smoke">
+                  ▾
+                </span>
+              </div>
             </div>
           </div>
         </div>
       </div>
-
-      <p className="mt-6 font-sans text-sm font-semibold text-ink/70" role="status">
-        {countText}
-      </p>
 
       {live === undefined ? (
         <div className="mt-4 grid grid-cols-2 gap-x-3 gap-y-6 sm:gap-x-4 lg:grid-cols-3" aria-label="Loading catalog" aria-busy="true">

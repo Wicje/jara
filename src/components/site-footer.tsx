@@ -115,12 +115,8 @@ export function SiteFooter() {
       <div className="mx-auto w-full max-w-6xl">
         <section
           aria-label="Get started with Jara"
-          className={`relative overflow-hidden rounded-[30px] bg-violet-deep text-white ${rise("[animation-delay:0ms]")}`}
+          className={`brand-glow relative overflow-hidden rounded-[30px] text-white ${rise("[animation-delay:0ms]")}`}
         >
-          <div
-            aria-hidden="true"
-            className="pointer-events-none absolute inset-0 bg-[radial-gradient(30rem_20rem_at_90%_10%,rgba(244,190,198,0.22),transparent_62%),radial-gradient(26rem_22rem_at_5%_95%,rgba(114,14,236,0.35),transparent_68%)]"
-          />
           <div className="relative grid gap-6 p-6 sm:p-10 lg:grid-cols-2 lg:items-center">
             <div>
               <p className="font-sans text-xs font-bold tracking-[0.2em] text-blush uppercase">

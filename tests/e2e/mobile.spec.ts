@@ -17,7 +17,8 @@ test("mobile store fits 375px: header, hero, occasions, product links", async ({
   const overflow = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
   expect(overflow, "horizontal overflow at 375px").toBeLessThanOrEqual(1);
 
-  await page.getByRole("link", { name: /owambe/i }).first().click();
+  await page.getByRole("button", { name: "Open menu" }).click();
+  await page.getByRole("navigation", { name: "Menu" }).getByRole("link", { name: "Owambe" }).click();
   await expect(page).toHaveURL(/\/catalog\?occasion=owambe/, { timeout: 20000 });
 
   const products = page.getByRole("list", { name: "Products" });
