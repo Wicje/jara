@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { Suspense, useCallback, useEffect, useRef, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
+import { motion } from "framer-motion";
 import { useAction, useMutation, useQuery } from "convex/react";
 import { api } from "../../../convex/_generated/api";
 import type { Id } from "../../../convex/_generated/dataModel";
@@ -32,6 +33,7 @@ function toBrainListings(
     stock?: number;
     occasion: string;
     photoUrl: string;
+    photoUrls?: string[];
     sizes: string[];
   }>,
 ) {
@@ -43,6 +45,7 @@ function toBrainListings(
     stock: l.stock,
     occasion: l.occasion,
     photoUrl: l.photoUrl,
+    photoUrls: l.photoUrls,
     sizes: l.sizes,
   }));
 }
@@ -97,6 +100,7 @@ function Chat() {
                   stock: l.stock,
                   occasion: l.occasion,
                   photoUrl: l.photoUrl,
+                  photoUrls: l.photoUrls,
                 })),
                 chips: [],
                 actions:
@@ -191,15 +195,30 @@ function Chat() {
             </p>
           </div>
         )}
-        {messages.map((message) =>
-          message.role === "user" ? (
-            <div key={message.id} className="flex justify-end">
-              <p className="max-w-[85%] rounded-[20px] bg-ink px-4 py-2.5 font-sans text-sm leading-6 text-white">
-                {message.text}
-              </p>
-            </div>
-          ) : (
-            <div key={message.id} className="grid gap-2">
+        {messages.map((message) => {
+          if (message.role === "user") {
+            return (
+              <motion.div
+                key={message.id}
+                initial={{ opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ type: "spring", stiffness: 380, damping: 30 }}
+                className="flex justify-end"
+              >
+                <p className="max-w-[85%] rounded-[20px] bg-violet px-4 py-2.5 font-sans text-sm leading-6 text-white">
+                  {message.text}
+                </p>
+              </motion.div>
+            );
+          }
+          return (
+            <motion.div
+              key={message.id}
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ type: "spring", stiffness: 380, damping: 30 }}
+              className="grid gap-2"
+            >
               <div className="max-w-[95%] rounded-[20px] rounded-tl-[8px] border border-line bg-white px-4 py-3">
                 <p className="font-sans text-sm leading-6 text-ink/90">{message.text}</p>
                 {message.actions && message.actions.length > 0 && (
@@ -250,9 +269,9 @@ function Chat() {
                   ))}
                 </div>
               )}
-            </div>
-          ),
-        )}
+            </motion.div>
+          );
+        })}
         {sending && (
           <p className="font-sans text-sm text-smoke" role="status">
             Concierge is searching…

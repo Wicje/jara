@@ -24,7 +24,7 @@ export function ChipGroup({ label, options, current, onSelect }: ChipGroupProps)
               onClick={() => onSelect(option.value)}
               className={`min-h-[42px] rounded-[32px] px-4 font-sans text-sm font-semibold transition-all active:scale-[0.97] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet ${
                 selected
-                  ? "bg-ink text-white"
+                  ? "bg-violet text-white shadow-[0_8px_20px_-8px_rgba(114,14,236,0.55)]"
                   : "bg-white text-ink ring-1 ring-ink/20 ring-inset hover:bg-mist"
               }`}
             >

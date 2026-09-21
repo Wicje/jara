@@ -7,6 +7,7 @@ export interface CartItem {
   title: string;
   priceNgn: number;
   photoUrl: string;
+  photoUrls?: string[];
   size: string;
 }
 

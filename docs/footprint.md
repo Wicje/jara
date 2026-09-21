@@ -17,7 +17,7 @@
 - **Env / secrets needed:** OPENAI_API_KEY (BYO, server actions only), FIRECRAWL_API_KEY, AGENTMAIL_API_KEY, CONVEX_URL
 
 ## 2. Current state (update every task — 3 lines max)
-- **Last known good:** 2026-09-21 — LLM agent channel built, deterministic fallback green: lint, build, unit 33, e2e 4
+- **Last known good:** 2026-09-21 — purple-primary refinement green: lint, build, unit 36, e2e 4
 - **Now working on:** Submission assets (demo video, social post, vibeapps)
 - **Blocked / needs human:** Dera's EMAIL address; Dera to confirm sizes/fabrics; AGENTMAIL_INBOX_ID still missing (sends queue without it)
 
@@ -181,3 +181,13 @@
 - Reason: Phase 0 agentic commerce — model reasons over tools, guardrails in system prompt
 - Checks: lint clean, build pass, unit 33 pass, e2e 4 pass (deterministic path; LLM path needs key)
 - Notes: send OPENAI_API_KEY to verify the live loop; uncommitted
+## 2026-09-21 — Purple leads the brand
+- Changed: violet promoted to primary (buttons, chips, steps, cart, ticker, giant word, tiles, CTA panel); accent redefined as blush; crimson kept for sale only; violet selection + glow accents
+- Reason: brand is purple + white — purple was wrongly secondary
+- Checks: lint clean, build pass, unit 36 pass, e2e 4 pass, baseline regenerated, screenshots verified
+- Notes: uncommitted
+## 2026-09-21 — Glass buttons, photo galleries, motion fixes
+- Changed: violet glass hover on solid buttons; photoUrls schema + importer galleries; card hover swap; PDP thumbnail gallery; fixed motion.button drag-type clash + chat JSX break
+- Reason: hover button-to-glass; second photo on hover; full gallery on PDP
+- Checks: lint clean, build pass, unit 36 pass, e2e 4 pass
+- Notes: uncommitted

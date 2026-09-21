@@ -64,6 +64,7 @@ function Checkout() {
           title: item.title,
           priceNgn: item.priceNgn,
           photoUrl: item.photoUrl,
+          photoUrls: item.photoUrls,
           size: item.size,
         })),
         createdAt: Date.now(),
@@ -137,7 +138,7 @@ function Checkout() {
           <li
             key={step}
             aria-current={index === 1 ? "step" : undefined}
-            className={`rounded-full px-3 py-1 ${index <= 1 ? "bg-ink text-white" : "bg-mist text-smoke"}`}
+            className={`rounded-full px-3 py-1 ${index <= 1 ? "bg-violet text-white" : "bg-mist text-smoke"}`}
           >
             {index + 1}. {step}
           </li>

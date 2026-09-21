@@ -115,7 +115,7 @@ export function SiteFooter() {
       <div className="mx-auto w-full max-w-6xl">
         <section
           aria-label="Get started with Jara"
-          className={`relative overflow-hidden rounded-[30px] bg-ink text-white ${rise("[animation-delay:0ms]")}`}
+          className={`relative overflow-hidden rounded-[30px] bg-violet-deep text-white ${rise("[animation-delay:0ms]")}`}
         >
           <div
             aria-hidden="true"

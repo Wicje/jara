@@ -21,6 +21,7 @@ function Storefront() {
     stock: l.stock,
     occasion: l.occasion,
     photoUrl: l.photoUrl,
+    photoUrls: l.photoUrls,
   }));
 
   return (

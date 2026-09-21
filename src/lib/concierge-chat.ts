@@ -30,6 +30,7 @@ export interface BrainListing {
   stock?: number;
   occasion: string;
   photoUrl: string;
+  photoUrls?: string[];
   sizes: string[];
 }
 
@@ -42,6 +43,7 @@ function toCardItem(l: BrainListing): ProductCardItem {
     stock: l.stock,
     occasion: l.occasion,
     photoUrl: l.photoUrl,
+    photoUrls: l.photoUrls,
   };
 }
 

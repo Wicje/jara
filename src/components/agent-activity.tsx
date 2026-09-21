@@ -38,7 +38,7 @@ function StartingIcon() {
   return (
     <div className="flex h-[6px] w-[29px] flex-row items-center justify-center gap-[2px]" aria-hidden="true">
       {bars.map((delay) => (
-        <span key={delay} className={`h-[6px] animate-pill-cycle rounded-full bg-ink ${delay}`} />
+        <span key={delay} className={`h-[6px] animate-pill-cycle rounded-full bg-violet ${delay}`} />
       ))}
     </div>
   );

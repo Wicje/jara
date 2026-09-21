@@ -8,6 +8,7 @@ export interface ReceiptItem {
   title: string;
   priceNgn: number;
   photoUrl: string;
+  photoUrls?: string[];
   size: string;
 }
 

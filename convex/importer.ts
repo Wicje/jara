@@ -7,6 +7,7 @@ const draftValidator = v.object({
   title: v.string(),
   priceNgn: v.number(),
   photoUrl: v.string(),
+  photoUrls: v.optional(v.array(v.string())),
   sourceUrl: v.optional(v.string()),
 });
 
@@ -35,6 +36,7 @@ export const saveDrafts = internalMutation({
         fabric: "imported",
         occasion: "street",
         photoUrl: draft.photoUrl,
+        photoUrls: draft.photoUrls,
         sourceUrl: draft.sourceUrl ?? args.sourceUrl,
         status: "draft",
         stock: 8,
@@ -93,12 +95,19 @@ export const importStore = action({
       .filter((n) => Number.isFinite(n) && n > 0);
 
     const titles = headings.length > 0 ? headings : [`Imported from ${parsed.hostname}`];
-    const drafts = titles.slice(0, 10).map((title, i) => ({
-      title,
-      priceNgn: money[i] ?? money[0] ?? 0,
-      photoUrl: images[i] ?? images[0] ?? "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=800&q=80",
-      sourceUrl: parsed.toString(),
-    }));
+    const drafts = titles.slice(0, 10).map((title, i) => {
+      const photoUrl =
+        images[i] ?? images[0] ?? "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=800&q=80";
+      // Gallery: the next few page images after this draft's own photo.
+      const photoUrls = images.filter((u) => u !== photoUrl).slice(i, i + 3);
+      return {
+        title,
+        priceNgn: money[i] ?? money[0] ?? 0,
+        photoUrl,
+        photoUrls: photoUrls.length > 0 ? photoUrls : undefined,
+        sourceUrl: parsed.toString(),
+      };
+    });
     const priced = drafts.filter((d) => d.priceNgn > 0);
     if (priced.length === 0) {
       return { imported: 0, note: "crawled but found no NGN prices to map" };

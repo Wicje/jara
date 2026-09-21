@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { ShoppingBag } from "@phosphor-icons/react";
+import { motion } from "framer-motion";
 import { useCart } from "./cart-provider";
 
 const TICKER = "Same-day delivery in Lagos. New drops weekly. Real prices in naira.";
@@ -9,7 +10,7 @@ const TICKER = "Same-day delivery in Lagos. New drops weekly. Real prices in nai
 function Ticker() {
   const items = [0, 1, 2, 3];
   return (
-    <div className="overflow-hidden bg-ink py-1.5" aria-hidden="true">
+    <div className="overflow-hidden bg-violet-deep py-1.5" aria-hidden="true">
       <div className="animate-marquee flex w-max gap-12">
         {[0, 1].map((half) => (
           <div key={half} className="flex shrink-0 gap-12">
@@ -55,13 +56,20 @@ export function SiteHeader() {
           <Link
             href="/cart"
             aria-label={`Cart, ${count} items`}
-            className="relative inline-flex min-h-[42px] min-w-[42px] shrink-0 items-center justify-center rounded-[32px] bg-ink px-3 font-sans text-sm font-semibold text-white transition-all hover:bg-black active:scale-[0.97]"
+            className="relative inline-flex min-h-[42px] min-w-[42px] shrink-0 items-center justify-center rounded-[32px] bg-violet px-3 font-sans text-sm font-semibold text-white shadow-[0_8px_20px_-8px_rgba(114,14,236,0.55)] transition-all hover:bg-violet-deep active:scale-[0.97]"
           >
             <ShoppingBag size={18} weight="bold" aria-hidden="true" />
             {count > 0 && (
-              <span aria-hidden="true" className="absolute -top-1.5 -right-1.5 flex h-5 min-w-5 items-center justify-center rounded-full bg-violet px-1 text-[11px] font-bold text-white">
+              <motion.span
+                key={count}
+                initial={{ scale: 0.4 }}
+                animate={{ scale: 1 }}
+                transition={{ type: "spring", stiffness: 500, damping: 15 }}
+                aria-hidden="true"
+                className="absolute -top-1.5 -right-1.5 flex h-5 min-w-5 items-center justify-center rounded-full bg-violet px-1 text-[11px] font-bold text-white"
+              >
                 {count}
-              </span>
+              </motion.span>
             )}
           </Link>
         </div>

@@ -24,6 +24,7 @@ function toCardItem(l: {
   stock?: number;
   occasion: string;
   photoUrl: string;
+  photoUrls?: string[];
 }): ProductCardItem {
   return {
     id: l._id,
@@ -33,6 +34,7 @@ function toCardItem(l: {
     stock: l.stock,
     occasion: l.occasion,
     photoUrl: l.photoUrl,
+    photoUrls: l.photoUrls,
   };
 }
 
@@ -70,7 +72,7 @@ function AskStrip() {
               aria-label="Describe what you're looking for"
               className="border-transparent"
             />
-            <Button type="submit" variant="black" className="shrink-0">
+            <Button type="submit" variant="primary" className="shrink-0">
               <MagnifyingGlass size={18} weight="bold" aria-hidden="true" />
               Ask Jara
             </Button>
@@ -128,11 +130,11 @@ function Banner({ photos }: { photos: string[] }) {
 
 function GiantWord() {
   return (
-    <section aria-label="Jara" className="overflow-hidden border-b border-crimson">
-      <h1 className="font-display text-[clamp(4.5rem,19vw,17rem)] leading-[0.9] tracking-tight whitespace-nowrap text-crimson uppercase text-center">
+    <section aria-label="Jara" className="overflow-hidden border-b border-violet">
+      <h1 className="font-display text-[clamp(4.5rem,19vw,17rem)] leading-[0.9] tracking-tight whitespace-nowrap text-violet uppercase text-center">
         Jara
       </h1>
-      <div className="border-t border-crimson">
+      <div className="border-t border-violet">
         <Container className="flex items-center justify-between py-2">
           <span className="font-sans text-xs font-semibold tracking-[0.14em] text-ink/70 uppercase">
             New Collection
@@ -222,7 +224,7 @@ function Tiles({ tiles }: { tiles: Tile[] }) {
             )}
             <span
               className={`font-display text-3xl tracking-wide uppercase sm:text-4xl ${
-                tile.tone === "light" ? "text-crimson" : "text-white drop-shadow-[0_2px_12px_rgba(0,0,0,0.6)]"
+                tile.tone === "light" ? "text-violet-deep" : "text-white drop-shadow-[0_2px_12px_rgba(0,0,0,0.6)]"
               }`}
             >
               {tile.label}
@@ -243,7 +245,7 @@ function Tiles({ tiles }: { tiles: Tile[] }) {
 
 function BottomCta() {
   return (
-    <section aria-label="Start shopping" className="relative left-1/2 w-screen -translate-x-1/2 overflow-hidden bg-crimson">
+    <section aria-label="Start shopping" className="relative left-1/2 w-screen -translate-x-1/2 overflow-hidden bg-violet-deep">
       <Container className="flex flex-col gap-4 py-10 sm:flex-row sm:items-center sm:justify-between sm:py-14">
         <p className="max-w-xl font-display text-3xl leading-tight tracking-wide text-white uppercase sm:text-4xl">
           Conquer the streets in style — start your shopping now!

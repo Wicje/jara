@@ -69,11 +69,11 @@ export default function CartPage() {
                 </li>
               ))}
             </ul>
-            <div className="sticky bottom-4 mt-6 flex flex-col gap-3 rounded-lg border border-line bg-ink p-4 text-paper sm:flex-row sm:items-center sm:justify-between sm:p-5">
+            <div className="sticky bottom-4 mt-6 flex flex-col gap-3 rounded-lg border border-violet-deep bg-violet-deep p-4 text-paper sm:flex-row sm:items-center sm:justify-between sm:p-5">
               <p className="font-display text-2xl tracking-wide tabular-nums">
                 Total {formatNgn(totalNgn)}
               </p>
-              <Button size="lg" variant="black" className="w-full sm:w-auto" onClick={() => router.push("/checkout")}>
+              <Button size="lg" variant="secondary" className="w-full border-0 sm:w-auto" onClick={() => router.push("/checkout")}>
                 Checkout
               </Button>
             </div>

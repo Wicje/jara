@@ -20,6 +20,7 @@ export default defineSchema({
     fabric: v.string(),
     occasion: v.string(),
     photoUrl: v.string(),
+    photoUrls: v.optional(v.array(v.string())),
     sourceUrl: v.optional(v.string()),
     status: v.string(),
   })

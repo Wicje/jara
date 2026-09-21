@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 import {
   ArrowUp,
   MagnifyingGlass,
@@ -116,14 +117,19 @@ export function AiComposer({ onSubmit, placeholder = "Ask anything…", autoFocu
               <Wrench size={16} aria-hidden="true" />
               <span>Tools</span>
             </button>
-            {isOpen ? (
-              <div className="absolute bottom-full left-0 z-30 pb-2">
-                <div
-                  role="menu"
-                  aria-label="Concierge tools"
-                  onMouseLeave={() => setHoveredId(null)}
-                  className="box-border w-[248px] origin-bottom-left animate-menu-pop overflow-hidden rounded-[20px] border border-line bg-white p-1.5 shadow-[0_24px_48px_rgba(15,23,42,0.12),0_8px_20px_rgba(15,23,42,0.06)]"
-                >
+            <div className="absolute bottom-full left-0 z-30 pb-2">
+              <AnimatePresence>
+                {isOpen ? (
+                  <motion.div
+                    role="menu"
+                    aria-label="Concierge tools"
+                    onMouseLeave={() => setHoveredId(null)}
+                    initial={{ opacity: 0, y: 6, scale: 0.96 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, y: 4, scale: 0.98 }}
+                    transition={{ type: "spring", stiffness: 420, damping: 28 }}
+                    className="box-border w-[248px] origin-bottom-left overflow-hidden rounded-[20px] border border-line bg-white p-1.5 shadow-[0_24px_48px_rgba(15,23,42,0.12),0_8px_20px_rgba(15,23,42,0.06)]"
+                  >
                   <ul className="m-0 flex list-none flex-col gap-0.5 p-0">
                     {COMPOSER_TOOLS.map((item) => {
                       const highlighted = highlightId === item.id;
@@ -147,9 +153,10 @@ export function AiComposer({ onSubmit, placeholder = "Ask anything…", autoFocu
                       );
                     })}
                   </ul>
-                </div>
-              </div>
-            ) : null}
+                  </motion.div>
+                ) : null}
+              </AnimatePresence>
+            </div>
           </div>
           <button
             type="button"
@@ -157,7 +164,7 @@ export function AiComposer({ onSubmit, placeholder = "Ask anything…", autoFocu
             disabled={!canSend}
             onClick={submit}
             className={`inline-flex size-9 shrink-0 cursor-pointer items-center justify-center rounded-full transition-colors outline-none focus-visible:ring-2 focus-visible:ring-violet focus-visible:ring-offset-2 focus-visible:ring-offset-paper disabled:cursor-not-allowed ${
-              canSend ? "bg-ink text-white hover:bg-black" : "bg-mist text-smoke/60"
+              canSend ? "bg-violet text-white shadow-[0_8px_20px_-8px_rgba(114,14,236,0.55)] hover:bg-violet-deep" : "bg-mist text-smoke/60"
             }`}
           >
             <ArrowUp size={16} weight="bold" aria-hidden="true" />

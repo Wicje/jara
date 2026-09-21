@@ -119,7 +119,7 @@ function Reviews({ listingId }: { listingId: Id<"listings"> }) {
                       {stars}
                     </span>
                     <span className="h-1.5 flex-1 overflow-hidden rounded-full bg-mist" aria-hidden="true">
-                      <span className="block h-full rounded-full bg-ink" style={{ width: `${width}%` }} />
+                      <span className="block h-full rounded-full bg-violet" style={{ width: `${width}%` }} />
                     </span>
                   </li>
                 );
@@ -196,7 +196,7 @@ function Reviews({ listingId }: { listingId: Id<"listings"> }) {
             {note}
           </p>
         )}
-        <Button className="mt-3" variant="black" loading={sending} onClick={() => void submit()}>
+        <Button className="mt-3" variant="primary" loading={sending} onClick={() => void submit()}>
           Post review
         </Button>
       </div>
@@ -247,6 +247,8 @@ function ProductDetail() {
   const soldOut = stock !== undefined && stock <= 0;
   const lowStock = stock !== undefined && stock > 0 && stock <= 3;
   const onSale = currentListing.compareAtNgn !== undefined && currentListing.compareAtNgn > currentListing.priceNgn;
+  const gallery = [currentListing.photoUrl, ...(currentListing.photoUrls ?? []).filter((url) => url !== currentListing.photoUrl)];
+  const activePhoto = gallery[Math.min(thumb, gallery.length - 1)];
   const related = (allListings ?? [])
     .filter((l) => l._id !== currentListing._id && l.occasion === currentListing.occasion)
     .slice(0, 4)
@@ -267,6 +269,7 @@ function ProductDetail() {
       title: currentListing.title,
       priceNgn: currentListing.priceNgn,
       photoUrl: currentListing.photoUrl,
+      photoUrls: currentListing.photoUrls,
       size: chosenSize,
     });
     setAdded(true);
@@ -278,38 +281,41 @@ function ProductDetail() {
         <div>
           <div className="overflow-hidden rounded-xl bg-mist">
             <Image
-              src={currentListing.photoUrl}
+              key={activePhoto}
+              src={activePhoto}
               alt={currentListing.title}
               width={900}
               height={675}
               sizes="(max-width: 1024px) 100vw, 50vw"
-              className="aspect-[4/3] w-full object-cover object-top"
+              className="aspect-[4/3] w-full animate-fade-swap object-cover object-top"
               priority
             />
           </div>
-          <div className="mt-3 grid grid-cols-3 gap-3" role="group" aria-label="Product photos">
-            {[0, 1, 2].map((index) => (
-              <button
-                key={index}
-                type="button"
-                onClick={() => setThumb(index)}
-                aria-pressed={thumb === index}
-                aria-label={`View photo ${index + 1}`}
-                className={`overflow-hidden rounded-lg bg-mist outline-none transition-all focus-visible:ring-2 focus-visible:ring-violet ${
-                  thumb === index ? "ring-2 ring-ink" : "opacity-80 hover:opacity-100"
-                }`}
-              >
-                <Image
-                  src={currentListing.photoUrl}
-                  alt=""
-                  width={300}
-                  height={225}
-                  className="aspect-[4/3] w-full object-cover object-top"
-                  loading="lazy"
-                />
-              </button>
-            ))}
-          </div>
+          {gallery.length > 1 && (
+            <div className="mt-3 grid grid-cols-3 gap-3" role="group" aria-label="Product photos">
+              {gallery.map((photo, index) => (
+                <button
+                  key={photo}
+                  type="button"
+                  onClick={() => setThumb(index)}
+                  aria-pressed={thumb === index}
+                  aria-label={`View photo ${index + 1}`}
+                  className={`overflow-hidden rounded-lg bg-mist outline-none transition-all focus-visible:ring-2 focus-visible:ring-violet ${
+                    thumb === index ? "ring-2 ring-ink" : "opacity-80 hover:opacity-100"
+                  }`}
+                >
+                  <Image
+                    src={photo}
+                    alt=""
+                    width={300}
+                    height={225}
+                    className="aspect-[4/3] w-full object-cover object-top"
+                    loading="lazy"
+                  />
+                </button>
+              ))}
+            </div>
+          )}
         </div>
 
         <div className="pb-24 lg:pb-0">
@@ -338,7 +344,7 @@ function ProductDetail() {
               Save {formatNgn(currentListing.compareAtNgn! - currentListing.priceNgn)}
             </p>
           )}
-          <p className="mt-3 inline-flex items-center gap-1.5 rounded-full bg-mist px-3 py-1.5 font-sans text-xs font-medium text-ink/80">
+          <p className="mt-3 inline-flex items-center gap-1.5 rounded-full bg-blush-soft px-3 py-1.5 font-sans text-xs font-semibold text-violet-deep">
             <Clock size={14} aria-hidden="true" />
             {countdown
               ? `Order in ${countdown} to get same-day delivery`
@@ -365,7 +371,7 @@ function ProductDetail() {
                       setAdded(false);
                     }}
                     className={`min-h-[42px] min-w-[52px] rounded-full px-4 font-sans text-sm font-semibold transition-all active:scale-[0.97] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet ${
-                      selected ? "bg-black text-white" : "bg-mist text-ink hover:bg-line"
+                      selected ? "bg-violet text-white shadow-[0_8px_20px_-8px_rgba(114,14,236,0.55)]" : "bg-mist text-ink hover:bg-line"
                     }`}
                   >
                     {option}
@@ -385,7 +391,7 @@ function ProductDetail() {
                 Added. View cart
               </Button>
             ) : (
-              <Button variant="black" onClick={addToCart} className="flex-1">
+              <Button variant="primary" onClick={addToCart} className="flex-1">
                 <ShoppingBag size={17} weight="bold" aria-hidden="true" />
                 Add to Cart
               </Button>
@@ -459,7 +465,7 @@ function ProductDetail() {
               Added. View cart
             </Button>
           ) : (
-            <Button className="w-full" size="lg" variant="black" onClick={addToCart}>
+            <Button className="w-full" size="lg" variant="primary" onClick={addToCart}>
               <ShoppingBag size={17} weight="bold" aria-hidden="true" />
               Add to Cart · {formatNgn(currentListing.priceNgn)}
             </Button>

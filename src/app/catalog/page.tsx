@@ -48,6 +48,7 @@ function Catalog() {
       stock: l.stock,
       occasion: l.occasion,
       photoUrl: l.photoUrl,
+      photoUrls: l.photoUrls,
     }));
   }, [live, filter, sort]);
 
