@@ -17,9 +17,9 @@
 - **Env / secrets needed:** OPENAI_API_KEY (BYO, server actions only), FIRECRAWL_API_KEY, AGENTMAIL_API_KEY, CONVEX_URL
 
 ## 2. Current state (update every task — 3 lines max)
-- **Last known good:** 2026-09-20 — full store IA live (8 routes), lint/build/unit(11)/e2e(3) green
-- **Now working on:** Dera email for real sends + demo video + social post + vibeapps submit
-- **Blocked / needs human:** Dera's EMAIL address; Dera to confirm sizes/fabrics
+- **Last known good:** 2026-09-21 — frontend cleanup green: lint clean, build, unit 11 pass, e2e 3 pass
+- **Now working on:** Human inputs and submission assets; large frontend restyle remains uncommitted
+- **Blocked / needs human:** Dera's EMAIL address; Dera to confirm sizes/fabrics; commit/push decision
 
 ## 3. Decisions (why, not what — append, never rewrite)
 | Date | Decision | Why |
@@ -111,6 +111,7 @@
 - [ ] Get Dera's EMAIL address so order emails send for real (currently queued honestly)
 - [ ] Dera to confirm sizes/fabrics (names/prices/photos real from her site)
 - [ ] Full-access AGENTMAIL_API_KEY, then demo video, social post, vibeapps submit
+- [ ] Decide whether to commit/push the large uncommitted frontend restyle and cleanup
 
 ## 6. Resume prompt (for a fresh agent with no memory)
 > Read `docs/footprint.md`, `docs/brief.md`, `docs/coding-rules.md`, `AGENTS.md`.
@@ -124,3 +125,18 @@
 3. Never rewrite history — append only. Fix mistakes with a new entry.
 4. If log exceeds ~200 lines, archive oldest entries to `docs/footprint-archive-YYYY-MM.md` and keep a 1-line summary pointer here.
 5. `factory.sh` helpers: `./factory.sh footprint <project> "message"` appends a timestamped entry with git state. `./factory.sh footprint <project> --show` prints Current state + last 5 entries.
+
+## 2026-09-20 22:37 — repo-describe: GitHub description 'Created with Software Factory' -> 'AI-powered Nigerian fashion market: chat your style, AI finds it in real stores' (verified via gh repo view)
+- Changed: (edit this line — files/sections touched)
+- Reason: repo-describe: GitHub description 'Created with Software Factory' -> 'AI-powered Nigerian fashion market: chat your style, AI finds it in real stores' (verified via gh repo view)
+- Checks: not-run (update after ./factory.sh check jara)
+- Git log:
+  dfbd57f Update footprint and hackathon log: audit fixes and store IA
+  3e238ae Full store IA: header/footer, landing, catalog, PDP, cart, checkout, order tracking, storefront
+  9ffc324 Update footprint and hackathon log: Untitled UI adoption
+- Notes: (anything the next agent must know)
+## 2026-09-21 — Frontend polish and cleanup
+- Changed: shared button/price/skeleton helpers, removed unused UI deps, ignored generated Convex files, sharpened hero/occasion layout
+- Reason: make storefront bolder while removing dead/duplicated frontend code
+- Checks: lint clean, build pass, unit 11 pass, e2e 3 pass
+- Notes: large frontend restyle remains uncommitted; hydration warning observed in dev browser log but no console-error test failure

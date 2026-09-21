@@ -14,7 +14,7 @@ import { ChipGroup, BUDGET_OPTIONS, OCCASION_OPTIONS, SIZE_OPTIONS } from "@/com
 import { Container } from "@/components/ui/container";
 import { Label } from "@/components/ui/label";
 import { Text } from "@/components/ui/text";
-import { ProductCard } from "@/components/product-card";
+import { ProductCard, ProductCardSkeleton } from "@/components/product-card";
 
 type Sort = "newest" | "price-asc" | "price-desc";
 
@@ -54,47 +54,46 @@ function Catalog() {
     live === undefined
       ? "Loading catalog…"
       : items.length === 1
-        ? `1 ${occasionLabel} piece`
-        : `${items.length} ${occasionLabel} pieces`;
+        ? `1 ${occasionLabel} piece in stock`
+        : `${items.length} ${occasionLabel} pieces in stock`;
 
   return (
     <>
-      <div className="mt-6 grid gap-3">
-        <ChipGroup label="Occasion" options={OCCASION_OPTIONS} current={occasion} onSelect={setOccasion} />
-        <div className="grid grid-cols-2 gap-3">
-          <ChipGroup label="Size" options={SIZE_OPTIONS} current={size} onSelect={setSize} />
-          <ChipGroup label="Budget" options={BUDGET_OPTIONS} current={budget} onSelect={setBudget} />
-        </div>
-        <div className="grid max-w-55 gap-1.5">
-          <Label htmlFor="sort">Sort</Label>
-          <select
-            id="sort"
-            value={sort}
-            onChange={(e) => setSort(e.target.value as Sort)}
-            className="h-11 rounded-md border border-neutral-300 bg-white px-3 text-sm focus:outline-none focus:ring-2 focus:ring-amber-800"
-          >
-            <option value="newest">Newest</option>
-            <option value="price-asc">Price low to high</option>
-            <option value="price-desc">Price high to low</option>
-          </select>
+      <div className="mt-6 rounded-lg bg-cream p-4 sm:p-5">
+        <div className="grid gap-4">
+          <ChipGroup label="Occasion" options={OCCASION_OPTIONS} current={occasion} onSelect={setOccasion} />
+          <div className="grid gap-4 sm:grid-cols-3">
+            <ChipGroup label="Size" options={SIZE_OPTIONS} current={size} onSelect={setSize} />
+            <ChipGroup label="Budget" options={BUDGET_OPTIONS} current={budget} onSelect={setBudget} />
+            <div className="grid content-start gap-1.5">
+              <Label htmlFor="sort">Sort</Label>
+              <select
+                id="sort"
+                value={sort}
+                onChange={(e) => setSort(e.target.value as Sort)}
+                className="h-11 rounded-md border border-ink/20 bg-white px-3 font-sans text-sm text-ink focus:border-palm focus:outline-none focus:ring-2 focus:ring-palm/40"
+              >
+                <option value="newest">Newest</option>
+                <option value="price-asc">Price low to high</option>
+                <option value="price-desc">Price high to low</option>
+              </select>
+            </div>
+          </div>
         </div>
       </div>
 
-      <Text className="mt-6" role="status">
+      <p className="mt-6 font-sans text-sm font-semibold text-ink/70" role="status">
         {countText}
-      </Text>
+      </p>
 
       {live === undefined ? (
-        <div className="mt-4 grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-3" aria-label="Loading catalog" aria-busy="true">
+        <div className="mt-4 grid grid-cols-2 gap-x-3 gap-y-6 sm:gap-x-4 lg:grid-cols-3" aria-label="Loading catalog" aria-busy="true">
           {[0, 1, 2, 3, 4, 5].map((skeleton) => (
-            <div key={skeleton} className="rounded-xl border border-neutral-200 bg-white p-3 sm:p-6">
-              <div className="aspect-[3/4] w-full animate-pulse rounded-lg bg-neutral-200" />
-              <div className="mt-3 h-4 w-3/4 animate-pulse rounded bg-neutral-200" />
-            </div>
+            <ProductCardSkeleton key={skeleton} />
           ))}
         </div>
       ) : items.length === 0 ? (
-        <Card variant="subtle" className="mt-4">
+        <Card variant="panel" className="mt-4">
           <CardHeader>
             <CardTitle>Nothing matches yet</CardTitle>
             <CardDescription>No pieces fit that combination. Loosen the budget or clear the size to see more.</CardDescription>
@@ -113,11 +112,11 @@ function Catalog() {
           </CardFooter>
         </Card>
       ) : (
-        <div className="mt-4 grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-3" role="list" aria-label="Products">
+        <ul className="mt-4 grid grid-cols-2 gap-x-3 gap-y-6 sm:gap-x-4 lg:grid-cols-3" aria-label="Products">
           {items.map((item) => (
             <ProductCard key={item.id} item={item} />
           ))}
-        </div>
+        </ul>
       )}
     </>
   );
@@ -126,10 +125,11 @@ function Catalog() {
 export default function CatalogPage() {
   return (
     <main>
-      <Container className="pb-4">
-        <Text as="h1" className="pt-10 text-3xl font-extrabold tracking-tight sm:text-4xl">
-          Browse the market
-        </Text>
+      <Container className="pt-8 pb-4 sm:pt-10">
+        <p className="font-sans text-xs font-bold tracking-[0.2em] text-gold uppercase">The market</p>
+        <h1 className="mt-2 font-display text-4xl tracking-wide text-ink uppercase sm:text-5xl">
+          Browse everything
+        </h1>
         {isConvexConfigured() ? (
           <Suspense fallback={<Text className="mt-6">Loading catalog…</Text>}>
             <Catalog />

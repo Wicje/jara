@@ -43,11 +43,9 @@ function load(): CartItem[] {
 }
 
 export function CartProvider({ children }: { children: ReactNode }) {
-  const [items, setItems] = useState<CartItem[]>([]);
-
-  useEffect(() => {
-    setItems(load());
-  }, []);
+  const [items, setItems] = useState<CartItem[]>(() =>
+    typeof window === "undefined" ? [] : load(),
+  );
 
   useEffect(() => {
     try {

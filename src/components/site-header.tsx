@@ -4,38 +4,68 @@ import Link from "next/link";
 import { ShoppingBag } from "@phosphor-icons/react";
 import { useCart } from "./cart-provider";
 
+const TICKER = "Same-day delivery in Lagos. New drops weekly. Real prices in naira.";
+
+function Ticker() {
+  const items = [0, 1, 2, 3];
+  return (
+    <div className="overflow-hidden bg-ink py-1.5" aria-hidden="true">
+      <div className="animate-marquee flex w-max gap-12">
+        {[0, 1].map((half) => (
+          <div key={half} className="flex shrink-0 gap-12">
+            {items.map((item) => (
+              <span key={item} className="font-sans text-[11px] font-bold tracking-[0.18em] whitespace-nowrap text-paper uppercase">
+                {TICKER}
+              </span>
+            ))}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 export function SiteHeader() {
   const { count } = useCart();
   return (
-    <header className="sticky top-0 z-40 border-b border-neutral-200 bg-white/95 backdrop-blur">
-      <div className="mx-auto flex h-16 w-full max-w-6xl items-center gap-4 px-4 sm:px-6">
-        <Link href="/" aria-label="Jara home" className="text-xl font-extrabold tracking-tight text-neutral-900">
-          Jara
-        </Link>
-        <nav aria-label="Primary" className="flex flex-1 items-center gap-4 text-sm font-medium text-neutral-700 sm:gap-6">
-          <Link href="/catalog" className="hover:text-neutral-900">
-            Catalog
+    <>
+      <Ticker />
+      <header className="sticky top-0 z-40 border-b border-line bg-paper/95 backdrop-blur">
+        <div className="mx-auto flex h-16 w-full max-w-6xl items-center gap-3 px-4 sm:px-6">
+          <Link href="/" aria-label="Jara home" className="font-display text-2xl tracking-wide text-ink">
+            JARA
           </Link>
-          <Link href="/store" className="hover:text-neutral-900">
-            Dera&apos;s store
+          <nav aria-label="Primary" className="flex flex-1 items-center gap-4 overflow-x-auto font-sans text-sm font-semibold text-ink/70 sm:gap-6">
+            <Link href="/catalog" className="shrink-0 hover:text-ink">
+              Catalog
+            </Link>
+            <Link href="/catalog?occasion=owambe" className="shrink-0 hover:text-ink">
+              Owambe
+            </Link>
+            <Link href="/catalog?occasion=church" className="hidden shrink-0 hover:text-ink sm:inline">
+              Church
+            </Link>
+            <Link href="/catalog?occasion=street" className="hidden shrink-0 hover:text-ink sm:inline">
+              Street
+            </Link>
+            <Link href="/store" className="shrink-0 hover:text-ink">
+              Dera&apos;s store
+            </Link>
+          </nav>
+          <Link
+            href="/cart"
+            aria-label={`Cart, ${count} items`}
+            className="relative inline-flex min-h-11 min-w-11 shrink-0 items-center justify-center rounded-full bg-palm px-3 font-sans text-sm font-semibold text-white transition-all hover:bg-palm-deep active:scale-[0.97]"
+          >
+            <ShoppingBag size={18} weight="bold" aria-hidden="true" />
+            {count > 0 && (
+              <span aria-hidden="true" className="absolute -top-1.5 -right-1.5 flex h-5 min-w-5 items-center justify-center rounded-full bg-gold px-1 text-[11px] font-bold text-white">
+                {count}
+              </span>
+            )}
           </Link>
-          <Link href="/vendor" className="hidden hover:text-neutral-900 sm:inline">
-            Sell on Jara
-          </Link>
-        </nav>
-        <Link
-          href="/cart"
-          aria-label={`Cart, ${count} items`}
-          className="relative inline-flex min-h-11 min-w-11 items-center justify-center rounded-md border border-neutral-300 px-3 text-sm font-medium transition-colors hover:bg-neutral-50"
-        >
-          <ShoppingBag size={18} weight="bold" aria-hidden="true" />
-          {count > 0 && (
-            <span aria-hidden="true" className="absolute -top-2 -right-2 flex h-5 min-w-5 items-center justify-center rounded-full bg-amber-800 px-1 text-[11px] font-bold text-white">
-              {count}
-            </span>
-          )}
-        </Link>
-      </div>
-    </header>
+        </div>
+      </header>
+    </>
   );
 }

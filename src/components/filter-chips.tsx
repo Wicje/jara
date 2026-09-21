@@ -10,7 +10,7 @@ interface ChipGroupProps {
 export function ChipGroup({ label, options, current, onSelect }: ChipGroupProps) {
   return (
     <div className="grid gap-1.5">
-      <span id={`${label}-label`} className="text-xs font-semibold uppercase tracking-wide text-neutral-500">
+      <span id={`${label}-label`} className="font-sans text-xs font-bold tracking-[0.14em] text-smoke uppercase">
         {label}
       </span>
       <div className="flex flex-wrap gap-2" role="group" aria-labelledby={`${label}-label`}>
@@ -22,10 +22,10 @@ export function ChipGroup({ label, options, current, onSelect }: ChipGroupProps)
               type="button"
               aria-pressed={selected}
               onClick={() => onSelect(option.value)}
-              className={`min-h-11 rounded-full px-4 text-sm font-medium transition-all active:scale-[0.97] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-800 ${
+              className={`min-h-11 rounded-full px-4 font-sans text-sm font-semibold transition-all active:scale-[0.97] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold ${
                 selected
-                  ? "bg-amber-800 text-white"
-                  : "border border-neutral-300 bg-white text-neutral-800 active:bg-neutral-100"
+                  ? "bg-palm text-white"
+                  : "bg-white text-ink ring-1 ring-ink/20 ring-inset hover:bg-cream"
               }`}
             >
               {option.label}

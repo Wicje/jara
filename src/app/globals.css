@@ -1,30 +1,38 @@
 @import "tailwindcss";
-@import "./untitledui-theme.css";
 
-@plugin "tailwindcss-animate";
-@plugin "tailwindcss-react-aria-components";
+@theme {
+  --font-display: "Anton", "Arial Narrow", Impact, sans-serif;
+  --font-sans: "Archivo", system-ui, -apple-system, sans-serif;
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --color-paper: #faf8f4;
+  --color-cream: #f3eee1;
+  --color-ink: #16130e;
+  --color-smoke: #6f6558;
+  --color-line: #e5dccb;
+  --color-palm: #1e4d3b;
+  --color-palm-deep: #122e23;
+  --color-gold: #b45309;
+  --color-gold-soft: #f5e6c8;
+
+  --animate-marquee: marquee 30s linear infinite;
+
+  @keyframes marquee {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-50%);
+    }
+  }
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@media (prefers-reduced-motion: reduce) {
+  .animate-marquee {
+    animation: none;
   }
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--color-paper);
+  color: var(--color-ink);
 }

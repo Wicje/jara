@@ -4,18 +4,16 @@ import Link from "next/link";
 import { Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { useQuery } from "convex/react";
-import { CheckCircle } from "@phosphor-icons/react";
+import { CheckCircle, WhatsappLogo } from "@phosphor-icons/react";
 import { api } from "../../../convex/_generated/api";
 import { DERA_VENDOR } from "@/data/dera";
 import { isConvexConfigured } from "../providers";
 import { Badge } from "@/components/ui/badge";
+import { buttonClasses } from "@/components/ui/button";
+import { formatNgn } from "@/components/format";
 import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Container } from "@/components/ui/container";
 import { Text } from "@/components/ui/text";
-
-function formatNgn(value: number): string {
-  return `₦${value.toLocaleString("en-NG")}`;
-}
 
 function Confirmation() {
   const params = useSearchParams();
@@ -27,7 +25,7 @@ function Confirmation() {
   }
   if (entries.length === 0) {
     return (
-      <Card variant="subtle" className="mt-6">
+      <Card variant="panel" className="mt-6">
         <CardHeader>
           <CardTitle>Order not found</CardTitle>
           <CardDescription>Check the link, or browse the catalog for something else.</CardDescription>
@@ -42,62 +40,52 @@ function Confirmation() {
 
   return (
     <>
-      <div className="mt-6 flex items-start gap-3">
-        <CheckCircle size={32} weight="fill" className="shrink-0 text-green-700" aria-hidden="true" />
-        <div>
-          <Text as="h1" className="text-3xl font-extrabold tracking-tight sm:text-4xl">
-            Order sent
-          </Text>
-          <Text className="mt-2">
-            Thanks {buyer}. Dera has your order and confirms by WhatsApp, usually within 2 hours.
-          </Text>
+      <section aria-label="Receipt" className="mt-6 overflow-hidden rounded-lg bg-palm-deep text-paper">
+        <div className="flex items-start gap-3 p-5 sm:p-8">
+          <CheckCircle size={36} weight="fill" className="shrink-0 text-gold-soft" aria-hidden="true" />
+          <div>
+            <h1 className="font-display text-4xl tracking-wide uppercase sm:text-5xl">Order sent</h1>
+            <p className="mt-2 max-w-md font-sans text-base leading-7 text-paper/80">
+              Thanks {buyer}. Dera has your order and confirms by WhatsApp, usually within 2 hours.
+            </p>
+            <p className="mt-3 font-display text-2xl tracking-wide text-gold-soft tabular-nums">
+              {entries.length} {entries.length === 1 ? "piece" : "pieces"} · {formatNgn(total)}
+            </p>
+          </div>
         </div>
-      </div>
+      </section>
 
-      <Card className="mt-6">
-        <CardHeader>
-          <CardTitle>
-            {entries.length} {entries.length === 1 ? "piece" : "pieces"} · {formatNgn(total)}
-          </CardTitle>
-          <CardDescription>Keep this page. It updates live as Dera confirms.</CardDescription>
-        </CardHeader>
-      </Card>
-
-      <section aria-label="What happens next" className="mt-6">
-        <Text as="h2" className="text-xl">
-          What happens next
-        </Text>
+      <section aria-label="What happens next" className="mt-8">
+        <h2 className="font-display text-2xl tracking-wide text-ink uppercase sm:text-3xl">What happens next</h2>
         <ol className="mt-3 grid gap-2">
           {[
             "Dera confirms your sizes by WhatsApp.",
             `Transfer ${formatNgn(total)} to confirm, or pay on pickup.`,
             "Same-day delivery in Lagos. Nationwide on request.",
           ].map((step, index) => (
-            <li key={step} className="flex gap-3 rounded-xl border border-neutral-200 bg-white p-3 sm:p-4">
-              <Badge color="brand" key={`step-${index}`}>
+            <li key={step} className="flex items-center gap-3 rounded-md border border-line bg-white p-3 sm:p-4">
+              <Badge color="palm" key={`step-${index}`}>
                 {index + 1}
               </Badge>
-              <Text className="text-sm sm:text-base">{step}</Text>
+              <span className="font-sans text-sm text-ink/90 sm:text-base">{step}</span>
             </li>
           ))}
         </ol>
       </section>
 
-      <section aria-label="Live updates" className="mt-6">
-        <Text as="h2" className="text-xl">
-          Live updates
-        </Text>
+      <section aria-label="Live updates" className="mt-8">
+        <h2 className="font-display text-2xl tracking-wide text-ink uppercase sm:text-3xl">Live updates</h2>
         <div className="mt-3 grid gap-2" aria-live="polite">
           {entries.map(({ order, listing, events }) => (
-            <details key={order._id} className="rounded-xl border border-neutral-200 bg-white px-3 py-2 sm:px-4" open>
-              <summary className="cursor-pointer text-sm font-medium">
+            <details key={order._id} className="rounded-md border border-line bg-white px-3 py-2 sm:px-4" open>
+              <summary className="cursor-pointer font-sans text-sm font-semibold text-ink">
                 {listing?.title ?? "Piece"} (Size {order.size}) · {order.status.replace(/_/g, " ")}
               </summary>
               <div className="mt-2 grid gap-1">
                 {events.map((event) => (
-                  <Text as="span" key={event._id} className="block text-sm" tone="muted">
+                  <p key={event._id} className="font-sans text-sm leading-6 text-smoke">
                     {event.direction === "out" ? "To vendor" : "From vendor"}: {event.body}
-                  </Text>
+                  </p>
                 ))}
               </div>
             </details>
@@ -110,13 +98,14 @@ function Confirmation() {
           href={`${DERA_VENDOR.whatsappLink}?text=${encodeURIComponent(whatsappText)}`}
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-md bg-amber-800 px-4 text-sm font-medium text-white transition-colors hover:bg-amber-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-800 sm:w-auto"
+          className={buttonClasses({ variant: "primary" })}
         >
+          <WhatsappLogo size={16} weight="bold" aria-hidden="true" />
           Follow up on WhatsApp
         </a>
         <Link
           href="/catalog"
-          className="inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-md border border-neutral-300 px-4 text-sm font-medium transition-colors hover:bg-neutral-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400 sm:w-auto"
+          className={buttonClasses({ variant: "secondary" })}
         >
           Keep shopping
         </Link>
@@ -128,9 +117,9 @@ function Confirmation() {
 export default function OrderPage() {
   return (
     <main>
-      <Container className="pb-4">
+      <Container className="pt-8 pb-4 sm:pt-10">
         {isConvexConfigured() ? (
-          <Suspense fallback={<Text className="mt-6 pt-10">Loading your receipt…</Text>}>
+          <Suspense fallback={<Text className="mt-6">Loading your receipt…</Text>}>
             <Confirmation />
           </Suspense>
         ) : (

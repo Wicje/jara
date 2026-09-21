@@ -1,39 +1,32 @@
 "use client";
 
-// Radius system (locked): cards 12px (rounded-xl), buttons and inputs 6px
-// (rounded-md), chips and status pills full (rounded-full).
 import type { HTMLAttributes } from "react";
 
-type Variant = "default" | "subtle" | "feature";
+type Variant = "panel" | "outlined";
 
 const variants: Record<Variant, string> = {
-  default: "rounded-xl border border-neutral-200 bg-white p-6",
-  subtle: "rounded-xl border border-neutral-100 bg-neutral-50 p-6",
-  feature: "rounded-xl border border-neutral-200 bg-white p-8 shadow-sm",
+  panel: "rounded-lg bg-cream",
+  outlined: "rounded-lg border border-line bg-white",
 };
 
 export interface CardProps extends HTMLAttributes<HTMLDivElement> {
   variant?: Variant;
 }
 
-export function Card({ variant = "default", className, ...props }: CardProps) {
-  return <div className={`${variants[variant]} ${className ?? ""}`} {...props} />;
+export function Card({ variant = "outlined", className, ...props }: CardProps) {
+  return <div className={`${variants[variant]} p-4 sm:p-6 ${className ?? ""}`} {...props} />;
 }
 
 export function CardHeader({ className, ...props }: HTMLAttributes<HTMLDivElement>) {
-  return <div className={`mb-4 ${className ?? ""}`} {...props} />;
-}
-
-export function CardMedia({ className, ...props }: HTMLAttributes<HTMLDivElement>) {
-  return <div className={`-m-3 mb-2 overflow-hidden rounded-t-xl sm:-m-6 sm:mb-4 ${className ?? ""}`} {...props} />;
+  return <div className={`mb-3 ${className ?? ""}`} {...props} />;
 }
 
 export function CardTitle({ className, ...props }: HTMLAttributes<HTMLHeadingElement>) {
-  return <h3 className={`text-lg font-semibold ${className ?? ""}`} {...props} />;
+  return <h3 className={`font-display text-xl tracking-wide text-ink uppercase ${className ?? ""}`} {...props} />;
 }
 
 export function CardDescription({ className, ...props }: HTMLAttributes<HTMLParagraphElement>) {
-  return <p className={`mt-1 text-sm text-neutral-500 ${className ?? ""}`} {...props} />;
+  return <p className={`mt-1 font-sans text-sm text-smoke ${className ?? ""}`} {...props} />;
 }
 
 export function CardContent({ className, ...props }: HTMLAttributes<HTMLDivElement>) {
@@ -41,5 +34,5 @@ export function CardContent({ className, ...props }: HTMLAttributes<HTMLDivEleme
 }
 
 export function CardFooter({ className, ...props }: HTMLAttributes<HTMLDivElement>) {
-  return <div className={`mt-6 flex items-center gap-3 ${className ?? ""}`} {...props} />;
+  return <div className={`mt-5 flex items-center gap-3 ${className ?? ""}`} {...props} />;
 }

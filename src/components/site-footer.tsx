@@ -1,60 +1,63 @@
+"use client";
+
 import Link from "next/link";
+import { InstagramLogo, WhatsappLogo } from "@phosphor-icons/react";
 import { DERA_VENDOR } from "@/data/dera";
 
 export function SiteFooter() {
   return (
-    <footer className="mt-16 border-t border-neutral-200 bg-neutral-50">
-      <div className="mx-auto grid w-full max-w-6xl gap-8 px-4 py-10 sm:grid-cols-4 sm:px-6">
+    <footer className="mt-20 border-t border-line bg-cream">
+      <div className="mx-auto grid w-full max-w-6xl gap-10 px-4 py-12 sm:grid-cols-4 sm:px-6">
         <div>
-          <p className="text-lg font-extrabold tracking-tight text-neutral-900">Jara</p>
-          <p className="mt-2 text-sm leading-6 text-neutral-600">
+          <p className="font-display text-3xl tracking-wide text-ink">JARA</p>
+          <p className="mt-3 font-sans text-sm leading-6 text-ink/70">
             Jara means extra value. Real pieces from Lagos boutiques, ordered in one tap.
           </p>
         </div>
         <nav aria-label="Shop">
-          <p className="text-sm font-semibold text-neutral-900">Shop</p>
-          <ul className="mt-2 grid gap-2 text-sm text-neutral-600">
-            <li><Link href="/catalog" className="hover:text-neutral-900">Browse catalog</Link></li>
-            <li><Link href="/catalog?occasion=owambe" className="hover:text-neutral-900">Owambe</Link></li>
-            <li><Link href="/catalog?occasion=church" className="hover:text-neutral-900">Church</Link></li>
-            <li><Link href="/catalog?occasion=street" className="hover:text-neutral-900">Street</Link></li>
-            <li><Link href="/cart" className="hover:text-neutral-900">Your cart</Link></li>
+          <p className="font-sans text-xs font-bold tracking-[0.14em] text-smoke uppercase">Shop</p>
+          <ul className="mt-3 grid gap-2.5 font-sans text-sm font-medium text-ink/80">
+            <li><Link href="/catalog" className="hover:text-ink">Browse everything</Link></li>
+            <li><Link href="/catalog?occasion=owambe" className="hover:text-ink">Owambe</Link></li>
+            <li><Link href="/catalog?occasion=church" className="hover:text-ink">Church</Link></li>
+            <li><Link href="/catalog?occasion=street" className="hover:text-ink">Street</Link></li>
+            <li><Link href="/cart" className="hover:text-ink">Your cart</Link></li>
           </ul>
         </nav>
         <div>
-          <p className="text-sm font-semibold text-neutral-900">Delivery and exchanges</p>
-          <ul className="mt-2 grid gap-2 text-sm text-neutral-600">
+          <p className="font-sans text-xs font-bold tracking-[0.14em] text-smoke uppercase">Delivery and exchanges</p>
+          <ul className="mt-3 grid gap-2.5 font-sans text-sm text-ink/80">
             <li>Same-day delivery in Lagos.</li>
             <li>Nationwide and international delivery available.</li>
             <li>Need an exchange? Message Dera on WhatsApp and she will sort you out.</li>
           </ul>
         </div>
         <div>
-          <p className="text-sm font-semibold text-neutral-900">Reach Dera</p>
-          <ul className="mt-2 grid gap-2 text-sm text-neutral-600">
+          <p className="font-sans text-xs font-bold tracking-[0.14em] text-smoke uppercase">Reach Dera</p>
+          <ul className="mt-3 grid gap-2.5 font-sans text-sm font-medium text-ink/80">
             <li>
-              <a href={DERA_VENDOR.whatsappLink} target="_blank" rel="noopener noreferrer" className="underline hover:text-neutral-900">
-                WhatsApp {DERA_VENDOR.whatsapp}
+              <a href={DERA_VENDOR.whatsappLink} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 hover:text-ink">
+                <WhatsappLogo size={15} weight="bold" aria-hidden="true" /> {DERA_VENDOR.whatsapp}
               </a>
             </li>
             <li>
-              <a href={DERA_VENDOR.instagramUrl} target="_blank" rel="noopener noreferrer" className="underline hover:text-neutral-900">
-                Instagram @styleinlagosss
+              <a href={DERA_VENDOR.instagramUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 hover:text-ink">
+                <InstagramLogo size={15} aria-hidden="true" /> @styleinlagosss
               </a>
             </li>
             <li>
-              <a href={DERA_VENDOR.website} target="_blank" rel="noopener noreferrer" className="underline hover:text-neutral-900">
+              <a href={DERA_VENDOR.website} target="_blank" rel="noopener noreferrer" className="hover:text-ink">
                 styleinlagos.ng
               </a>
             </li>
-            <li><Link href="/store" className="underline hover:text-neutral-900">Dera&apos;s store page</Link></li>
+            <li><Link href="/store" className="hover:text-ink">Dera&apos;s store page</Link></li>
           </ul>
         </div>
       </div>
-      <div className="border-t border-neutral-200">
-        <div className="mx-auto flex w-full max-w-6xl flex-col gap-1 px-4 py-4 text-xs text-neutral-500 sm:flex-row sm:items-center sm:justify-between sm:px-6">
+      <div className="border-t border-line">
+        <div className="mx-auto flex w-full max-w-6xl flex-col gap-1 px-4 py-4 font-sans text-xs text-smoke sm:flex-row sm:items-center sm:justify-between sm:px-6">
           <span>Jara. Extra value, delivered.</span>
-          <Link href="/vendor" className="underline hover:text-neutral-700">Sell on Jara</Link>
+          <Link href="/vendor" className="underline hover:text-ink">Sell on Jara</Link>
         </div>
       </div>
     </footer>

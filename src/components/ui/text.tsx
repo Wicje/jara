@@ -16,19 +16,19 @@ const styles: Record<Element, string> = {
 
 const tones: Record<Tone, string> = {
   default: "",
-  muted: "text-neutral-500",
-  error: "text-red-700",
-  success: "text-green-700",
-  accent: "text-amber-800",
+  muted: "text-smoke",
+  error: "text-red-800",
+  success: "text-green-800",
+  accent: "text-gold",
 };
 
 const defaultTone: Record<Element, string> = {
-  h1: "text-neutral-900",
-  h2: "text-neutral-900",
-  h3: "text-neutral-900",
-  h4: "text-neutral-900",
-  p: "text-neutral-600",
-  span: "text-neutral-600",
+  h1: "text-ink",
+  h2: "text-ink",
+  h3: "text-ink",
+  h4: "text-ink",
+  p: "text-ink/80",
+  span: "text-ink/70",
 };
 
 export interface TextProps extends HTMLAttributes<HTMLElement> {

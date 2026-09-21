@@ -1,9 +1,15 @@
 "use client";
 
 import type { ReactNode } from "react";
-import { Badge as UntitledBadge } from "@/components/base/badges/badges";
 
-type Color = "gray" | "brand" | "success" | "warning" | "error" | "blue";
+type Color = "palm" | "gold" | "ink" | "success";
+
+const colors: Record<Color, string> = {
+  palm: "bg-palm/10 text-palm-deep ring-palm/25",
+  gold: "bg-gold-soft text-gold ring-gold/30",
+  ink: "bg-ink/5 text-ink ring-ink/15",
+  success: "bg-green-100 text-green-900 ring-green-700/20",
+};
 
 export interface BadgeProps {
   color?: Color;
@@ -11,10 +17,12 @@ export interface BadgeProps {
   className?: string;
 }
 
-export function Badge({ color = "gray", children, className }: BadgeProps) {
+export function Badge({ color = "ink", children, className }: BadgeProps) {
   return (
-    <UntitledBadge type="pill-color" size="md" color={color} className={className}>
+    <span
+      className={`inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 font-sans text-xs font-semibold ring-1 ring-inset ${colors[color]} ${className ?? ""}`}
+    >
       {children}
-    </UntitledBadge>
+    </span>
   );
 }
