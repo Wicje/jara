@@ -17,8 +17,8 @@
 - **Env / secrets needed:** OPENAI_API_KEY (BYO, server actions only), FIRECRAWL_API_KEY, AGENTMAIL_API_KEY, CONVEX_URL
 
 ## 2. Current state (update every task — 3 lines max)
-- **Last known good:** 2026-09-21 — Montserrat/Garamond type swap green: build, e2e 3 pass, baseline updated
-- **Now working on:** Submission assets (demo video, social post, vibeapps)
+- **Last known good:** 2026-09-21 — Otto-pattern footer green: lint clean, build, unit 22 pass, e2e 3 pass
+- **Now working on:** Phase 0 agent chat (needs OpenAI key); sister onboarding; submission assets
 - **Blocked / needs human:** Dera's EMAIL address; Dera to confirm sizes/fabrics; AGENTMAIL_INBOX_ID still missing (sends queue without it)
 
 ## 3. Decisions (why, not what — append, never rewrite)
@@ -161,3 +161,8 @@
 - Reason: ship redesign + persona batch to the live business URL
 - Checks: live site verified at runtime — 57 owambe + 26 church + 15 street = 98 listings, new UI serving
 - Notes: non-interactive deploy needs --yes flag; static HTML shows 0 counts pre-hydration (normal); INBOX_ID still missing
+## 2026-09-21 — Otto-pattern footer adapted
+- Changed: footer rebuilt as white rounded card (violet glow, shop/vendor columns, social buttons, giant JARA watermark) under kept dark CTA panel
+- Reason: adapt Otto reference to Jara brand/tokens/routes
+- Checks: lint clean, build pass, unit 22 pass, e2e 3 pass, baseline unchanged
+- Notes: no framer/lucide/cn/tooltip deps added; tooltips are native title+aria; uncommitted

@@ -16,6 +16,20 @@
 
   --animate-marquee: marquee 30s linear infinite;
 
+  --animate-rise: rise 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+
+  --animate-fade-swap: fade-swap 0.22s cubic-bezier(0.22, 1, 0.36, 1) both;
+
+  --animate-pill-cycle: pill-cycle 1.8s ease-in-out infinite;
+
+  --animate-pulse-ring: pulse-ring 2s ease-in-out infinite;
+
+  --animate-radar-spin: radar-spin 2.2s linear infinite;
+
+  --animate-core-breathe: core-breathe 1.8s ease-in-out infinite;
+
+  --animate-ping-soft: ping-soft 2.4s cubic-bezier(0.22, 1, 0.36, 1) infinite;
+
   @keyframes marquee {
     from {
       transform: translateX(0);
@@ -24,11 +38,112 @@
       transform: translateX(-50%);
     }
   }
+
+  @keyframes rise {
+    from {
+      opacity: 0;
+      transform: translateY(14px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes fade-swap {
+    from {
+      opacity: 0;
+      transform: translateY(6px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes pill-cycle {
+    0%,
+    22% {
+      width: 13px;
+      opacity: 1;
+    }
+    33%,
+    55% {
+      width: 6px;
+      opacity: 0.3;
+    }
+    66%,
+    88% {
+      width: 6px;
+      opacity: 0.3;
+    }
+    100% {
+      width: 13px;
+      opacity: 1;
+    }
+  }
+
+  @keyframes pulse-ring {
+    0%,
+    100% {
+      transform: scale(0.94);
+      opacity: 0.75;
+    }
+    50% {
+      transform: scale(1.06);
+      opacity: 1;
+    }
+  }
+
+  @keyframes radar-spin {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  @keyframes core-breathe {
+    0%,
+    100% {
+      transform: scale(0.92);
+    }
+    50% {
+      transform: scale(1.1);
+    }
+  }
+
+  @keyframes ping-soft {
+    0% {
+      transform: scale(1);
+      opacity: 0.5;
+    }
+    70% {
+      transform: scale(1.6);
+      opacity: 0;
+    }
+    100% {
+      transform: scale(1.6);
+      opacity: 0;
+    }
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .animate-marquee {
     animation: none;
+  }
+  .animate-rise {
+    animation: none;
+  }
+  .animate-fade-swap,
+  .animate-pill-cycle,
+  .animate-pulse-ring,
+  .animate-radar-spin,
+  .animate-core-breathe,
+  .animate-ping-soft {
+    animation: none !important;
   }
 }
 

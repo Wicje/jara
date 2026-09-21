@@ -13,6 +13,7 @@ import { isConvexConfigured } from "../providers";
 import { Badge } from "@/components/ui/badge";
 import { buttonClasses } from "@/components/ui/button";
 import { formatNgn } from "@/components/format";
+import AgentActivity, { resolveOrderActivity } from "@/components/agent-activity";
 import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Container } from "@/components/ui/container";
 import { Text } from "@/components/ui/text";
@@ -70,6 +71,7 @@ function Confirmation() {
   const total = entries.reduce((sum, entry) => sum + (entry.listing?.priceNgn ?? 0), 0);
   const buyer = entries[0].order.buyerName;
   const whatsappText = `Hi Dera! I just ordered on Jara (${entries.length} pieces, ${formatNgn(total)}). My name is ${buyer}.`;
+  const activity = resolveOrderActivity(entries);
 
   return (
     <>
@@ -108,6 +110,22 @@ function Confirmation() {
 
       <section aria-label="Live updates" className="mt-8">
         <h2 className="font-display text-2xl tracking-wide text-ink uppercase sm:text-3xl">Live updates</h2>
+        <div className="mt-4">
+          <AgentActivity
+            state={activity.state}
+            showStateSelector={false}
+            copy={
+              activity.flagged
+                ? {
+                    [activity.state]: {
+                      title: "Needs a quick check",
+                      description: "Something looks off — reply to Dera on WhatsApp.",
+                    },
+                  }
+                : undefined
+            }
+          />
+        </div>
         <div className="mt-3 grid gap-2" aria-live="polite">
           {entries.map(({ order, listing, events }) => (
             <details key={order._id} className="rounded-md border border-line bg-white px-3 py-2 sm:px-4" open>

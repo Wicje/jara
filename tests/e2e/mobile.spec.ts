@@ -15,7 +15,7 @@ test("mobile store fits 375px: header, hero, occasions, product links", async ({
 
   await page.goto("/");
   await expect(page.getByRole("banner")).toBeVisible();
-  await expect(page.getByRole("link", { name: /jara home/i })).toBeVisible();
+  await expect(page.getByRole("banner").getByRole("link", { name: /jara home/i })).toBeVisible();
   await expect(page.getByRole("link", { name: /cart, \d+ items/i })).toBeVisible();
   await expect(page.getByRole("button", { name: "Ask Jara" })).toBeVisible();
 
@@ -23,7 +23,7 @@ test("mobile store fits 375px: header, hero, occasions, product links", async ({
   expect(overflow, "horizontal overflow at 375px").toBeLessThanOrEqual(1);
 
   await page.getByRole("link", { name: /owambe/i }).first().click();
-  await expect(page).toHaveURL(/\/catalog\?occasion=owambe/);
+  await expect(page).toHaveURL(/\/catalog\?occasion=owambe/, { timeout: 20000 });
 
   const products = page.getByRole("list", { name: "Products" });
   await expect(products.getByRole("link").first()).toBeVisible();

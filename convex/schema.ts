@@ -32,6 +32,15 @@ export default defineSchema({
     size: v.optional(v.string()),
     occasion: v.optional(v.string()),
     recommendedIds: v.array(v.id("listings")),
+    messages: v.optional(
+      v.array(
+        v.object({
+          role: v.string(),
+          text: v.string(),
+          createdAt: v.number(),
+        }),
+      ),
+    ),
   }),
   orders: defineTable({
     listingId: v.id("listings"),
